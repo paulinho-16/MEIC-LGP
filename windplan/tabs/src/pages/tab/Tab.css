@@ -6,25 +6,25 @@
   padding: 4rem;
 }
 
-.tabs.page > .narrow > img {
+.tabs.page > img {
   margin: 0 auto;
   display: block;
   width: 200px;
 }
 
-.tabs.page > .narrow > ul {
+.tabs.page > ul {
   width: 80%;
   justify-content: space-between;
   margin: 4rem auto;
   border-bottom: none;
 }
 
-.tabs.page > .narrow > ul > li {
+.tabs.page > ul > li {
   background-color: inherit;
   margin: auto;
 }
 
-.tabs.page > .narrow > ul > li > a {
+.tabs.page > ul > li > a {
   font-size: 14px;
   min-height: 32px;
   border-bottom-color: rgb(98, 100, 167);

@@ -1,7 +1,7 @@
 import React from "react";
 
-import { StackGraph } from "./StackGraph";
-import { ProgramList } from "./ProgramList";
+import { StackGraph } from "../../components/programRanking/StackGraph";
+import { ProgramList } from "../../components/programRanking/ProgramList";
 
 import "./ProgramRanking.css";
 

@@ -1,11 +1,14 @@
 import React from "react";
-
-import { programs } from "./MockProjects";
-
-programs.forEach((p) => p["key"] = "" + p["program_id"]);
-console.log(programs)
+import { useFind } from 'react-pouchdb';
 
 export function ProgramList() {
+  const programs = useFind({
+    selector: {},
+  });
+
+  programs.forEach((p) => p["key"] = "" + p["program_id"]);
+  console.log(programs);
+
   return (
     <div>
       <table>
@@ -17,9 +20,9 @@ export function ProgramList() {
         </thead>
         <tbody>
         {programs.map((program, rank) => (
-          <tr key={program["key"]}>
+          <tr key={program._id}>
             <td>{rank + 1}</td>
-            <td>{program["program_name"]}</td>
+            <td>{program.name}</td>
           </tr>
         ))}
         </tbody>

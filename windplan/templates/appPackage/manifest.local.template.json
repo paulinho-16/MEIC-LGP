@@ -15,12 +15,12 @@
         "outline": "resources/outline.png"
     },
     "name": {
-        "short": "windplan-local-debug",
-        "full": "windplan-local-debug"
+        "short": "WindPlan",
+        "full": "WindPlan"
     },
     "description": {
-        "short": "Short description of windplan-local-debug",
-        "full": "Full description of windplan-local-debug"
+        "short": "WindPlan helps you to prioritize your protfolio!",
+        "full": "WindPlan helps you to prioritize your protfolio and decide where to invest your resources!"
     },
     "accentColor": "#FFFFFF",
     "bots": [],
@@ -38,7 +38,7 @@
     "staticTabs": [
         {
             "entityId": "index",
-            "name": "Personal Tab",
+            "name": "WindPlan",
             "contentUrl": "{{{localSettings.frontend.tabEndpoint}}}{{{localSettings.frontend.tabIndexPath}}}/tab",
             "websiteUrl": "{{{localSettings.frontend.tabEndpoint}}}{{{localSettings.frontend.tabIndexPath}}}/tab",
             "scopes": [
