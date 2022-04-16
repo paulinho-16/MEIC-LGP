@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { useDB } from 'react-pouchdb';
 import EditProgram from './EditProgram';
-// import { useEffect, useRef, useState } from 'react';
 
 export default function Program({ doc, deleteCallback }) {
   const [editing, setEditing] = useState(false)

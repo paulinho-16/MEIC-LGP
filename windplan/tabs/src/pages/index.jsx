@@ -1,4 +1,7 @@
-import { InputPage } from "./InputPage";
-import { TabPage } from "./TabPage";
+import Input from "./Input";
+import Privacy from './Privacy'
+import Tab from "./Tab";
+import TabConfig from "./TabConfig";
+import TermsOfUse from "./TermsOfUse"
 
-export { InputPage, TabPage }
+export { Input, Privacy, Tab, TabConfig, TermsOfUse }

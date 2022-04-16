@@ -2,7 +2,7 @@ import React from 'react';
 import CreateProgram from '../components/CreateProgram';
 import SelectProgram from '../components/SelectProgram';
 
-export function InputPage() {
+export default function Input() {
   return (
     <>
       <h1>Input</h1>

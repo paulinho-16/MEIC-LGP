@@ -2,12 +2,9 @@ import React from "react";
 // https://fluentsite.z22.web.core.windows.net/quick-start
 import { Provider, teamsTheme, Loader } from "@fluentui/react-northstar";
 import { HashRouter as Router, Redirect, Route } from "react-router-dom";
-import { useTeamsFx } from "./components/sample/lib/useTeamsFx";
-import Privacy from "./components/Privacy";
-import TermsOfUse from "./components/TermsOfUse";
-import Tab from "./components/Tab";
-import TabConfig from "./components/TabConfig";
+import { useTeamsFx } from "./lib/useTeamsFx";
 
+import { Privacy, TermsOfUse, Tab, TabConfig } from './pages'
 
 export default function App() {
   const { theme, loading } = useTeamsFx();
@@ -16,7 +13,7 @@ export default function App() {
     <Provider theme={theme || teamsTheme} styles={{ backgroundColor: "#eeeeee" }}>
       <Router>
         <Route exact path="/">
-          <Redirect to="/input" />
+          <Redirect to="/tab" />
         </Route>
 
         {loading ? (
