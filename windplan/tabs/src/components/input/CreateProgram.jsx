@@ -17,6 +17,9 @@ export default function CreateProgram() {
   };
 
   return (
-    <EditProgram defaultDoc={defaultDoc} submitFunction={handleSubmit} />
+    <>
+      <h2>Create a New Program</h2>
+      <EditProgram defaultDoc={defaultDoc} submitFunction={handleSubmit} />
+    </>
   );
 }

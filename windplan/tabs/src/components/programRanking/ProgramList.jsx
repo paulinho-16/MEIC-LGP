@@ -1,13 +1,10 @@
 import React from "react";
-import { useFind } from 'react-pouchdb';
+import { useAllDocs } from 'react-pouchdb';
 
 export function ProgramList() {
-  const programs = useFind({
-    selector: {},
+  const programs = useAllDocs({
+    include_docs: true,
   });
-
-  programs.forEach((p) => p["key"] = "" + p["program_id"]);
-  console.log(programs);
 
   return (
     <div>
@@ -20,9 +17,9 @@ export function ProgramList() {
         </thead>
         <tbody>
         {programs.map((program, rank) => (
-          <tr key={program._id}>
+          <tr key={program.id}>
             <td>{rank + 1}</td>
-            <td>{program.name}</td>
+            <td>{program.doc.name}</td>
           </tr>
         ))}
         </tbody>

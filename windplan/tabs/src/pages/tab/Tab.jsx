@@ -1,7 +1,6 @@
 import React, { Suspense, useState } from "react";
 import { Menu } from "@fluentui/react-northstar";
-import { Input } from "..";
-import { ProgramRanking } from "../programRanking/ProgramRanking";
+import { Input, ProgramRanking } from "..";
 import { PouchDB } from "react-pouchdb";
 import { useTeamsFx } from "../../lib/useTeamsFx";
 import "./Tab.css";
@@ -27,7 +26,7 @@ export default function Tab() {
 
             <Menu defaultActiveIndex={0} items={items} underlined secondary />
 
-            <div className="sections">
+            <div>
               {selectedMenuItem === "home" && (
                 <h2>Home Page</h2>
               )}

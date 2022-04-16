@@ -1,12 +1,12 @@
 import { useState } from 'react';
-import { useFind } from 'react-pouchdb';
+import { useAllDocs } from 'react-pouchdb';
 import Program from './Program';
 
 export default function SelectProgram() {
   const [selected, setSelected] = useState(null);
 
-  const docs = useFind({
-    selector: {},
+  const rows = useAllDocs({
+    include_docs: true
   });
 
   const deleteCallback = () => {
@@ -15,13 +15,14 @@ export default function SelectProgram() {
 
   return (
     <>
+      <h2>View Program</h2>
       <label>Select program:
         <select name="program" onChange={(e) => setSelected(e.target.value)} defaultValue={null}>
           <option value={null}></option>
-          {docs.map((doc, i) => (<option key={doc._id} value={i}>{doc.name}</option>))}
+          {rows.map((row, i) => (<option key={row.id} value={i}>{row.doc.name}</option>))}
         </select>
       </label>
-      { selected && <Program doc={docs[selected]} deleteCallback={deleteCallback} /> }
+      { selected && <Program doc={rows[selected].doc} deleteCallback={deleteCallback} /> }
     </>
   );
 }
