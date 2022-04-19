@@ -2,6 +2,7 @@ import React, { Suspense, useState } from "react";
 import { Menu } from "@fluentui/react-northstar";
 import { Input } from "..";
 import { ProgramRanking } from "../programRanking/ProgramRanking";
+import { Matrix } from "../matrix/Matrix";
 import { PouchDB } from "react-pouchdb";
 import { useTeamsFx } from "../../lib/useTeamsFx";
 import "./Tab.css";
@@ -16,6 +17,7 @@ export default function Tab() {
     { key: 'input', content: 'Input', onClick: () => setSelectedMenuItem('input') },
     { key: 'ranking', content: 'Program Ranking', onClick: () => setSelectedMenuItem('ranking') },
     { key: 'status', content: 'Program Status', onClick: () => setSelectedMenuItem('status') },
+    { key: 'matrix', content: 'Program Matrix', onClick: () => setSelectedMenuItem('matrix') },
   ]
 
   return (
@@ -39,6 +41,9 @@ export default function Tab() {
               )}
               {selectedMenuItem === "status" && (
                 <h2>Status Page</h2>
+              )}
+              {selectedMenuItem === "matrix" && (
+                <Matrix />
               )}
             </div>
           </div>
