@@ -4,10 +4,15 @@ import { EditScoringVarsForm } from "./EditScoringVarsForm";
 
 
 
-export default function EditScoringVars({ defaultDoc, submitFunction }){
+export default function EditScoringVars(){
+
+    const handleSubmit = (state) => {
+        console.log(state);
+      }
+
     return(
         <Popup trigger={<button>Edit Scoring</button>} 
-            content={ <div className="modal-body"><EditScoringVarsForm onSubmit={submitFunction} /></div>}> 
+            content={ <div className="modal-body"><EditScoringVarsForm onSubmit={handleSubmit} /></div>}> 
         </Popup>
     );
 }
