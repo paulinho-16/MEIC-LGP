@@ -19,3 +19,5 @@ export const EditScoringVarsForm = ({onSubmit}) =>{
         </form>
     );
 };
+
+export default EditScoringVarsForm;
