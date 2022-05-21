@@ -1,3 +1,23 @@
+.navbar {
+  background-color: rgb(116, 172, 245);
+}
+
+.navbar-brand {
+  padding-left: 20px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  margin-top: 0%;
+  width: 9%;
+  height: 10%;
+}
+
+.pages{
+  padding-top: 1.2%;
+  float: right;
+  display: inline-block;
+}
+
+
 .narrow {
   margin: 0 5em;
 }
@@ -14,20 +34,18 @@
 
 .tabs.page > ul {
   width: 80%;
-  justify-content: space-between;
   margin: 4rem auto;
-  border-bottom: none;
 }
 
 .tabs.page > ul > li {
-  background-color: inherit;
+  background-color: rgb(116, 172, 245);
   margin: auto;
 }
 
 .tabs.page > ul > li > a {
   font-size: 14px;
   min-height: 32px;
-  border-bottom-color: rgb(98, 100, 167);
+  border-bottom-color: rgb(187, 189, 255);
 }
 
 .center {
