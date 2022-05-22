@@ -38,7 +38,6 @@ export default function Tab() {
               </div>
             </nav>
           </div> 
-
           <div className="sections">
                   {selectedMenuItem === "home" && (
                     <Homepage />

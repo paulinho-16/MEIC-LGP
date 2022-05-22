@@ -1,7 +1,9 @@
 .homecontainer{
     padding-top: 0%;
+    padding-left: 2%;
+    padding-right: 2%;
     margin-top: 0%;
-    background-color: #d2faff;
+    background-color: #e2f1f3;
     display: grid;
     grid-template-columns: 50% 50%;
 }
@@ -11,10 +13,6 @@
     width: calc(100% - 100px);
 }
 
-.tooldescription > h2 {
-    border-bottom-right-radius: 25px;
-    border-bottom-left-radius: 0px;
-}
 
 .guidelines {
     display: inline-grid;
@@ -40,6 +38,8 @@
     object-fit: cover;
     width: 50%;
     max-height: 100%;
+    background-color: rgb(252, 252, 252);
+    border-radius: 25px;
 }
 
 .contactandhelp {
@@ -52,7 +52,6 @@ h2 {
     border-bottom-style: solid;
     border-bottom-color: rgba(23, 23, 177, 0.658);
     border-bottom-width: 2px;
-    border-bottom-left-radius: 25px;
 }
 
 .text-div{
@@ -70,6 +69,8 @@ text {
 .contactandhelp > h2 {
     grid-row: 1;
 }
+
+
 
 .contact {
     display: inline-block;
