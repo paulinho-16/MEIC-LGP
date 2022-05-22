@@ -1,4 +1,4 @@
-import Input from "./Input";
+import Input from "./input/Input";
 import Privacy from './Privacy'
 import ProgramRanking from "./programRanking/ProgramRanking";
 import Tab from "./tab/Tab";

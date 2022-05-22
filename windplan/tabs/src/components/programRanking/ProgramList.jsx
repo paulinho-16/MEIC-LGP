@@ -1,10 +1,26 @@
-import React from "react";
-import { useAllDocs } from 'react-pouchdb';
+import React, { useContext, useEffect, useState } from "react";
+import { DbContext } from "../../context/db";
 
 export function ProgramList() {
-  const programs = useAllDocs({
-    include_docs: true,
-  });
+  const db = useContext(DbContext)
+  const [state, setState] = useState([])
+
+  useEffect(() => {
+    async function loadPrograms() {
+      const programs = (await db.rel.find('program')).programs
+  
+      setState(programs)
+    }
+    
+    loadPrograms();
+  }, [db])
+
+  
+  if (state.length === 0) {
+    return (
+      <div>Loading Programs...</div>
+    )
+  }
 
   return (
     <div>
@@ -16,12 +32,14 @@ export function ProgramList() {
           </tr>
         </thead>
         <tbody>
-        {programs.map((program, rank) => (
-          <tr key={program.id}>
-            <td>{rank + 1}</td>
-            <td>{program.doc.name}</td>
-          </tr>
-        ))}
+        {
+          state.map((program, rank) => (
+            <tr key={program.id}>
+              <td>{rank + 1}</td>
+              <td>{program.name}</td>
+            </tr>
+          )) 
+        }
         </tbody>
       </table>
     </div>

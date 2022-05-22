@@ -1,8 +1,9 @@
-import React, { Suspense, useState } from "react";
+import React, { useState } from "react";
 import { Menu } from "@fluentui/react-northstar";
 import { Input, ProgramRanking } from "..";
-import { PouchDB } from "react-pouchdb";
 import { useTeamsFx } from "../../lib/useTeamsFx";
+import { DbProvider } from "../../context/db";
+
 import "./Tab.css";
 
 export default function Tab() {
@@ -19,30 +20,28 @@ export default function Tab() {
 
   return (
     <div className={themeString === "default" ? "" : "dark"}>
-      <PouchDB name="windplandb">
-        <Suspense fallback="Loading...">
-          <div className="tabs page">
-            <h1 className="center">WindPlan</h1>
+      <DbProvider>
+        <div className="tabs page">
+          <h1 className="center">WindPlan</h1>
 
-            <Menu defaultActiveIndex={0} items={items} underlined secondary />
+          <Menu defaultActiveIndex={0} items={items} underlined secondary />
 
-            <div>
-              {selectedMenuItem === "home" && (
-                <h2>Home Page</h2>
-              )}
-              {selectedMenuItem === "input" && (
-                <Input />
-              )}
-              {selectedMenuItem === "ranking" && (
-                <ProgramRanking />
-              )}
-              {selectedMenuItem === "status" && (
-                <h2>Status Page</h2>
-              )}
-            </div>
+          <div>
+            {selectedMenuItem === "home" && (
+              <h2>Home Page</h2>
+            )}
+            {selectedMenuItem === "input" && (
+              <Input />
+            )}
+            {selectedMenuItem === "ranking" && (
+              <ProgramRanking />
+            )}
+            {selectedMenuItem === "status" && (
+              <h2>Status Page</h2>
+            )}
           </div>
-        </Suspense>
-      </PouchDB>
+        </div>
+      </DbProvider>
     </div>
   );
 }

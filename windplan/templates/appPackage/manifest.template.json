@@ -19,8 +19,8 @@
         "full": "{{config.manifest.appName.full}}"
     },
     "description": {
-        "short": "Short description of {{config.manifest.appName.short}}",
-        "full": "Full description of {{config.manifest.appName.short}}"
+        "short": "WindPlan helps you to prioritize your protfolio!",
+        "full": "WindPlan helps you to prioritize your protfolio and decide where to invest your resources!"
     },
     "accentColor": "#FFFFFF",
     "bots": [],
@@ -38,7 +38,7 @@
     "staticTabs": [
         {
             "entityId": "index",
-            "name": "Personal Tab",
+            "name": "WindPlan",
             "contentUrl": "{{{state.fx-resource-frontend-hosting.endpoint}}}{{{state.fx-resource-frontend-hosting.indexPath}}}/tab",
             "websiteUrl": "{{{state.fx-resource-frontend-hosting.endpoint}}}{{{state.fx-resource-frontend-hosting.indexPath}}}/tab",
             "scopes": [
