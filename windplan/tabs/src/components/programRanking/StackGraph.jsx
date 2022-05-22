@@ -1,6 +1,6 @@
 import React from "react";
 import Plot from 'react-plotly.js';
-// import Plotly from 'plotly.js';
+import Plotly from 'plotly.js';
 import { jsPDF } from "jspdf";
 import { useFind } from 'react-pouchdb';
 
@@ -14,7 +14,7 @@ export function StackGraph() {
   let hours = [];
   for (let i = 0; i < 12; i++) hours[i] = 0;
 
-  // Custos
+  // Costs
   programs.forEach((program, i) => {
 
     let costs = [];
@@ -35,7 +35,7 @@ export function StackGraph() {
 
   });
 
-  // Horas 
+  // Hours
   let k = 0;
   while (k < 12) {
     hours[k] = hours[k] * (1 + Math.random() / 5)
@@ -57,40 +57,30 @@ export function StackGraph() {
     'transform': 'matrix(1 0 0 -1 0 850)'
   }
 
+  let savePDFbutton = {
+    name: 'Save plot as PDF',
+    icon: savePDFicon,
+    direction: 'up',
+    click: function (gd) {
+      Plotly.toImage(gd, { format: 'png', height: gd._fullLayout.height, width: gd._fullLayout.width }).then(function (img) {
+        const pdf = new jsPDF({
+          orientation: 'landscape',
+        });
+        const imgProps = pdf.getImageProperties(img);
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+        pdf.addImage(img, 'PNG', 0, 0, pdfWidth, pdfHeight);
+        pdf.save("program_costs.pdf");
+      })
+    }
+  }
+
   let config = {
-    modeBarButtonsToAdd: [
-      // {
-      //   name: 'color toggler',
-      //   icon: icon1,
-      //   click: function(gd) {
-      //     let newColor = colors[Math.floor(3 * Math.random())]
-      //     Plotly.restyle(gd, 'line.color', newColor)
-      //   }},
-      // {
-      //   name: 'button1',
-      //   icon: Plotly.Icons.pencil,
-      //   direction: 'up',
-      //   click: function(gd) {alert('button1')
-      // }},
-      {
-        name: 'Save plot as PDF',
-        icon: savePDFicon,
-        direction: 'up',
-        click: function (gd) {
-          // gd.attr("src", url);
-          //   Plotly.downloadImage(gd, {format:'png', height:400, width:400}).then(function(dataUrl) {
-          //     console.log('aquii')
-          // });
-          var doc = new jsPDF({ options });
-
-          // add image
-          doc.addImage(gd, 'JPEG');
-
-          // Save document
-          doc.save('charts.pdf');
-        }
-      }],
-    // modeBarButtonsToRemove: ['pan2d','select2d','lasso2d','resetScale2d','zoomOut2d'] // TODO: decide if we should remove any buttons
+    displaylogo: false,
+    modeBarButtons: [
+      ['toImage', savePDFbutton],
+      ['zoom2d', 'pan2d', 'select2d', 'lasso2d', 'zoomIn2d', 'zoomOut2d', 'autoScale2d', 'resetScale2d']
+    ]
   }
 
   return (
