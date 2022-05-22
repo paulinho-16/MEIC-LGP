@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { DbContext } from "../../context/db";
+import { Table } from '@fluentui/react-northstar';
 
 export function ProgramList() {
   const db = useContext(DbContext)
@@ -21,27 +22,21 @@ export function ProgramList() {
       <div>Loading Programs...</div>
     )
   }
+  var ranking=0;
+  var table=[];
 
+  state.forEach((p) =>{
+    p["key"] = "" + p["program_id"];
+    table[ranking]={key: ranking+1, items: [ranking+1,p["name"]]};
+    ranking=ranking+1;
+  });
+
+  
+  const header={
+    items:['Rank', 'Name'],
+  }
+  const rows=table
   return (
-    <div>
-      <table>
-        <thead>
-          <tr>
-            <td>Rank</td>
-            <td>Name</td>
-          </tr>
-        </thead>
-        <tbody>
-        {
-          state.map((program, rank) => (
-            <tr key={program.id}>
-              <td>{rank + 1}</td>
-              <td>{program.name}</td>
-            </tr>
-          )) 
-        }
-        </tbody>
-      </table>
-    </div>
+    <Table header={header} rows={rows} aria-label="Program Ranking"></Table>
   );
 }
