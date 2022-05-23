@@ -9,10 +9,5 @@
     "devDependencies": {
         "@microsoft/teamsfx-cli": "0.*"
     },
-    "license": "MIT",
-    "dependencies": {
-        "plotly.js": "^2.12.1",
-        "react-plotly.js": "^2.5.1",
-        "react-virtualized": "^9.22.3"
-    }
+    "license": "MIT"
 }
