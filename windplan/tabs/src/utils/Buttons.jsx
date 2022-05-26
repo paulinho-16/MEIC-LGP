@@ -15,9 +15,7 @@ export function savePDFbutton(label, filename) {
     direction: 'up',
     click: function (gd) {
       Plotly.toImage(gd, { format: 'png', height: gd._fullLayout.height, width: gd._fullLayout.width }).then(function (img) {
-        const pdf = new jsPDF({
-          orientation: 'landscape',
-        });
+        const pdf = new jsPDF('landscape', 'mm', [gd._fullLayout.width*0.5, gd._fullLayout.height*0.5]);
         const imgProps = pdf.getImageProperties(img);
         const pdfWidth = pdf.internal.pageSize.getWidth();
         const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
