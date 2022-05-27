@@ -16,6 +16,7 @@
         "pouchdb": "^7.3.0",
         "react": "^16.14.0",
         "react-dom": "^16.14.0",
+        "react-dropdown": "^1.10.0",
         "react-dropzone": "^14.2.1",
         "react-plotly.js": "^2.5.1",
         "react-router-dom": "^5.1.2",
