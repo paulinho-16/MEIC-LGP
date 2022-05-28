@@ -1,4 +1,6 @@
 import React from 'react';
+import {AiOutlineMail, AiOutlinePhone, AiOutlineFile} from 'react-icons/ai'
+import {FiMapPin} from 'react-icons/fi'
 import "./Homepage.css";
 
 export function Homepage() {
@@ -13,31 +15,36 @@ export function Homepage() {
         </div>
         <div className='guidelines'>
             <h2>Guidelines</h2>
-            <div className='guideline-items'>
-                <img src='file-icon.png' alt='End-User License'></img>
-                <h3>End-User License</h3>
-            </div>
-            <div className='guideline-items'>
-                <img src='file-icon.png' alt='Terms and Conditions'></img>
-                <h3>Terms and Conditions</h3>
-            </div>
-            <div className='guideline-items'>
-                <img src='file-icon.png' alt='Usage Guidelines'></img>
-                <h3>Usage Guidelines</h3>
-            </div>
+            <div className='guidelines-content'>
+                <div className='guideline-items'>
+                    <AiOutlineFile size={70}></AiOutlineFile>
+                    <h3>End-User License</h3>
+                </div>
+                <div className='guideline-items'>
+                    <AiOutlineFile size={70}></AiOutlineFile>
+                    <h3>Terms and Conditions</h3>
+                </div>
+                <div className='guideline-items'>
+                    <AiOutlineFile size={70}></AiOutlineFile>
+                    <h3>Usage Guidelines</h3>
+                </div>
+            </div>   
         </div>
         <div className='contactandhelp'>
             <h2>Help / Contact</h2>
             <div className='contact'>
-                <h3>Email</h3>
+                <AiOutlineMail></AiOutlineMail>
+                <h3> Email</h3>
                 <text>windplan@fe.up.pt</text>
             </div>
             <div className='contact'>
+                <AiOutlinePhone></AiOutlinePhone>
                 <h3>Phone</h3>
                 <text>+351912345678</text>
                 <text>+351000345678</text>
             </div>
             <div className='contact'>
+                <FiMapPin></FiMapPin>
                 <h3>Address</h3>
                 <text>Rua Dr. Roberto Frias, Porto</text>
             </div>

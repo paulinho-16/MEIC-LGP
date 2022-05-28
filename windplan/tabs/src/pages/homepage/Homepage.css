@@ -24,22 +24,24 @@
     grid-column: 1/4;
 }
 
+.guideline-content {
+    grid-row: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .guideline-items {
-    grid-row: 2;
-    justify-content: center;
+    display: inline-block;
+    padding: 2%;
+    width:33%;
+    height: 33%;
+    float: left;
 }
 
-.guideline-items > h2{
-    grid-row: 2;
+.guideline-items > svg {
+    align-items: center;
     justify-content: center;
-}
-
-.guideline-items > img {
-    object-fit: cover;
-    width: 50%;
-    max-height: 100%;
-    background-color: rgb(252, 252, 252);
-    border-radius: 25px;
 }
 
 .contactandhelp {
@@ -73,5 +75,11 @@ text {
 
 
 .contact {
-    display: inline-block;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+}
+
+.contact > h3 {
+    padding-left: 10px;
 }

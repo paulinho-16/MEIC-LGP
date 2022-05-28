@@ -27,9 +27,8 @@
 }
 
 .tabs.page > img {
-  margin: 0 auto;
-  display: block;
-  width: 200px;
+  display: grid;
+  height: 100%;
 }
 
 .tabs.page > ul {
