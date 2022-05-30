@@ -112,12 +112,14 @@ async function timelines(db, rows) {
 
   let items = {};
   const itemsData = (await db.rel.find("item")).items;
-  console.log(itemsData)
+  console.log(itemsData);
   itemsData.forEach((item) => {
     items[item.id] = {
       name: item.name,
       projects: [...item.projects],
       id: item.id,
+      milestones: [],
+      rev: item.rev,
     };
   });
 
@@ -125,31 +127,22 @@ async function timelines(db, rows) {
     const programName = row["Program Name"];
     const itemNumber = row["Item Number"];
 
-    if (
-      !programs.has(programName) ||
-      !items.hasOwnProperty(itemNumber)
-    )
-      return;
+    if (!programs.has(programName) || !items.hasOwnProperty(itemNumber)) return;
 
-    items[itemNumber].phase = row["Phase"];
-    items[itemNumber].milestoneName = row["Milestone Name"];
-    items[itemNumber].milestoneSearchField = row["Milestone Search Field"];
-    items[itemNumber].plannedFinishedDate = row["Current Planned Finish Date"];
-    items[itemNumber].actualFinishedDate = row["Actual Finish Date"];
+    items[itemNumber].milestones.push({
+      phase: row["Phase"],
+      milestoneName: row["Milestone Name"],
+      milestoneSearchField: row["Milestone Search Field"],
+      plannedFinishedDate: row["Current Planned Finish Date"],
+      actualFinishedDate: row["Actual Finish Date"],
+    });
   });
 
   // Add Items to DB
   console.log(items);
-
-  console.log("first", await db.rel.find("program"));
-
-  const itemPromises = Object.values(items).map((item) =>
-    db.rel.save("item", { ...item, projects: [...item.projects] })
+  Object.values(items).forEach((item) =>
+    db.rel.save("item", { ...item, projects: [...item.projects], milestones: [...item.milestones] })
   );
-
-  await Promise.all(itemPromises);
-  console.log("second", await db.rel.find("program"));
-  return;
 }
 
 async function processExcel(db, data) {
