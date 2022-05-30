@@ -22,6 +22,14 @@ const rowProperties = {
     "Current Planned Finish Date",
     "Actual Finish Date",
   ],
+  rbs_ava_book_dem: [
+    "Department Structure - RBS2",
+    "Department Structure - RBS3",
+    "Department Structure - RBS4",
+    "Department Structure - RBS5",
+    "Availability_LGP",
+    "Year Month"
+  ]
 };
 
 const equals = (a, b) => a.length === b.length && a.every((v, i) => v === b[i]);
@@ -29,9 +37,14 @@ const equals = (a, b) => a.length === b.length && a.every((v, i) => v === b[i]);
 async function processRows(db, rows) {
   const properties = Object.keys(rows[0]);
 
+  console.log(properties)
+
   if (equals(properties, rowProperties.project_dem_book_cost))
     projectDemBookCost(db, rows);
-  else if (equals(properties, rowProperties.timelines)) timelines(db, rows);
+  else if (equals(properties, rowProperties.timelines)) 
+    timelines(db, rows);
+  else if (equals(properties, rowProperties.rbs_ava_book_dem))
+    rbsAvaBookDem(db, rows);
 }
 
 async function projectDemBookCost(db, rows) {
@@ -143,6 +156,78 @@ async function timelines(db, rows) {
   Object.values(items).forEach((item) =>
     db.rel.save("item", { ...item, projects: [...item.projects], milestones: [...item.milestones] })
   );
+}
+
+async function rbsAvaBookDem(db, rows) {
+  let teams = {};
+
+  let addTeam = (name, parentTeam = null) => {
+    if (!teams.hasOwnProperty(name)) {
+      let teamId = "team" + Object.keys(teams).length
+      
+      teams[name] = {
+        id: teamId,
+        name: name,
+        subTeams: [],
+        months: [],
+      };
+
+      if (parentTeam) teams[parentTeam].subTeams.push(teamId)
+    }
+  }
+
+  let months = rows.map((row) => {
+    let teamName;
+    
+    // RBS5 Team
+    if (!row["Department Structure - RBS5"].match(/^\(.+\)$/)) {
+      teamName = row["Department Structure - RBS5"]
+      addTeam(teamName, row["Department Structure - RBS4"])
+    }
+    // RBS4 Team
+    else if (!row["Department Structure - RBS4"].match(/^\(.+\)$/)) {
+      teamName = row["Department Structure - RBS4"]
+      addTeam(teamName, row["Department Structure - RBS3"])
+    }
+    // RBS3 Team
+    else if (!row["Department Structure - RBS3"].match(/^\(.+\)$/)) {
+      teamName = row["Department Structure - RBS3"]
+      addTeam(teamName, row["Department Structure - RBS2"])
+    }
+    // RBS2 Team
+    else {
+      teamName = row["Department Structure - RBS2"]
+      addTeam(teamName)
+    }
+
+    const monthId = row["Year Month"] + "-" + teams[teamName].id;
+
+    teams[teamName].months.push(monthId);
+
+    return {
+      id: monthId,
+      month: row["Year Month"],
+      availability: row["Availability_LGP"],
+    };
+  });
+
+  let teamsPromises = Object.values(teams).map((team) => {
+    return db.rel.save("team", team);
+  })
+
+  await Promise.all(teamsPromises);
+
+  console.log("Parsed teams!")
+
+  let monthsPromises = months.map((month) => {
+    return db.rel.save("month", month);
+  })
+
+  await Promise.all(monthsPromises);
+
+  console.log("Parsed months!")
+
+  return;
 }
 
 async function processExcel(db, data) {
