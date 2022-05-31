@@ -5,12 +5,18 @@ import Dropdown from 'react-dropdown';
 import 'react-dropdown/style.css';
 
 export function StackGraph() {
-  var data = []
+  
+ 
+  var data_placeholder=[]
   const db = useContext(DbContext)
   const [state, setState] = useState({
     programs: [],
     months_costs: [],
     years: []
+  })
+  
+  const [data, setData] = useState({
+    value: []
   })
 
   useEffect(() => {
@@ -67,43 +73,7 @@ export function StackGraph() {
     )
   }
 
-  
-  data.push({
-    x: months_name,
-    y: costs_name,
-    name: "",
-    type: "bar"
-  })
-
-  state.programs.forEach((program, i) => {
-    let months = [];
-    let costs = [];
-
-    if (state.months_costs[i] !== undefined) {
-     
-      state.months_costs[i].forEach((month, year) => {
-      
-        month.forEach((cost, index) => {
-          if(months[year]===undefined)
-            months[year]=[]
-
-          months[year].push(months_name[index])
-          
-          if(costs[year]===undefined)
-            costs[year]=[]
-
-          costs[year].push(cost)
-        })
-      })
-      data.push({
-        x: months[state.years[0]],
-        y: costs[state.years[0]],
-        name: program["name"],
-        type: "bar"
-      })
-
-    }
-  });
+  //data.value=data_placeholder
 
   //horas 
   /*   let k=0;
@@ -120,18 +90,24 @@ export function StackGraph() {
       name: "hours",
       type: "scatter"
     } */
-
-/* function changeYear(a)
+    //changeYear(2022)
+function changeYear(a)
 {
-  data = []
-  data.push({
+  data_placeholder = []
+  data_placeholder.push({
     x: months_name,
     y: costs_name,
     name: "",
     type: "bar"
   })
+  
+  let years_index=0
+  for (let i in state.years)
+  {
+    if(state.years[i]===a.value)
+      years_index=i
+  }
 
-  console.log("loading")
   state.programs.forEach((program, i) => {
     let months = [];
     let costs = [];
@@ -144,7 +120,7 @@ export function StackGraph() {
           if(months[year]===undefined)
             months[year]=[]
 
-          months[year].push(months_name[index])
+          months[year].push(months_name[index-1])
           
           if(costs[year]===undefined)
             costs[year]=[]
@@ -152,9 +128,9 @@ export function StackGraph() {
           costs[year].push(cost)
         })
       })
-      data.push({
-        x: months[state.years[a.value]],
-        y: costs[state.years[a.value]],
+      data_placeholder.push({
+        x: months[state.years[years_index]],
+        y: costs[state.years[years_index]],
         name: program["name"],
         type: "bar"
       })
@@ -162,16 +138,15 @@ export function StackGraph() {
     }
   });
 
-  console.log("done")
+  setData({value:data_placeholder})
 
-} */
+}
 
   return (
     <div>
-
-      <Dropdown options={state.years}  /* onChange={changeYear} */  value={state.years[0].toString()} placeholder="Select an option" />
+      <Dropdown options={state.years} onChange={changeYear}  placeholder="Select an option" />
       <Plot
-        data={data}
+        data={data.value}
         layout={{ height: 400, barmode: 'stack', title: 'Program Costs' }}
       />
     </div>
