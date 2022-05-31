@@ -16,6 +16,7 @@ export default function Tab() {
     { key: 'input', content: 'Input', onClick: () => setSelectedMenuItem('input') },
     { key: 'ranking', content: 'Program Ranking', onClick: () => setSelectedMenuItem('ranking') },
     { key: 'status', content: 'Program Status', onClick: () => setSelectedMenuItem('status') },
+    { key: 'matrix', content: 'Program Matrix', onClick: () => setSelectedMenuItem('matrix') },
   ]
 
   return (
