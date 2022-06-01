@@ -1,10 +1,9 @@
-import React, { Suspense, useState } from "react";
+import React, { useState } from "react";
 import { Menu } from "@fluentui/react-northstar";
-import { Input } from "..";
-import { ProgramRanking } from "../programRanking/ProgramRanking";
-import { Matrix } from "../matrix/Matrix";
-import { PouchDB } from "react-pouchdb";
+import { Input, ProgramRanking } from "..";
 import { useTeamsFx } from "../../lib/useTeamsFx";
+import { DbProvider } from "../../context/db";
+
 import "./Tab.css";
 
 export default function Tab() {
@@ -22,33 +21,28 @@ export default function Tab() {
 
   return (
     <div className={themeString === "default" ? "" : "dark"}>
-      <PouchDB name="windplandb">
-        <Suspense fallback="Loading...">
-          <div className="tabs page">
-            <h1 className="center">WindPlan</h1>
+      <DbProvider>
+        <div className="tabs page">
+          <h1 className="center">WindPlan</h1>
 
-            <Menu defaultActiveIndex={0} items={items} underlined secondary />
+          <Menu defaultActiveIndex={0} items={items} underlined secondary />
 
-            <div className="sections">
-              {selectedMenuItem === "home" && (
-                <h2>Home Page</h2>
-              )}
-              {selectedMenuItem === "input" && (
-                <Input />
-              )}
-              {selectedMenuItem === "ranking" && (
-                <ProgramRanking />
-              )}
-              {selectedMenuItem === "status" && (
-                <h2>Status Page</h2>
-              )}
-              {selectedMenuItem === "matrix" && (
-                <Matrix />
-              )}
-            </div>
+          <div>
+            {selectedMenuItem === "home" && (
+              <h2>Home Page</h2>
+            )}
+            {selectedMenuItem === "input" && (
+              <Input />
+            )}
+            {selectedMenuItem === "ranking" && (
+              <ProgramRanking />
+            )}
+            {selectedMenuItem === "status" && (
+              <h2>Status Page</h2>
+            )}
           </div>
-        </Suspense>
-      </PouchDB>
+        </div>
+      </DbProvider>
     </div>
   );
 }

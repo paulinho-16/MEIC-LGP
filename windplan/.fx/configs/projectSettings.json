@@ -1,5 +1,5 @@
 {
-    "appName": "windplan",
+    "appName": "WindPlan",
     "projectId": "8fee4543-43c6-4632-8ab4-95e56649bebe",
     "version": "2.1.0",
     "isFromSample": false,
@@ -9,7 +9,8 @@
         "hostType": "Azure",
         "azureResources": [],
         "capabilities": [
-            "Tab"
+            "Tab",
+            "TabSSO"
         ],
         "activeResourcePlugins": [
             "fx-resource-frontend-hosting",

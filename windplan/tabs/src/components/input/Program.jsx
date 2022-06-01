@@ -1,22 +1,25 @@
-import { useState } from 'react';
-import { useDB } from 'react-pouchdb';
+import { useContext, useState } from 'react';
+import { DbContext } from '../../context/db';
 import EditProgram from './EditProgram';
 
 export default function Program({ doc, deleteCallback }) {
   const [editing, setEditing] = useState(false)
-  const { put, remove } = useDB();
+  const db = useContext(DbContext)
 
   const handleSave = (state) => {
     if (editing) {
-      put(state).then(() => {
+      db.rel.save('program', state).then(() => {
         setEditing(false)
+        console.log("Save")
       })
     }
   }
 
   const handleDelete = () => {
-    deleteCallback()
-    remove(doc)
+    db.rel.del('program', doc).then(() => {
+      deleteCallback()
+      console.log("Delete")
+    })
   }
 
   return (
@@ -24,9 +27,9 @@ export default function Program({ doc, deleteCallback }) {
       <h2>{doc.name} {doc.strategic && '(!)'}</h2>
       { !editing ? (
         <>
-          <p>ID: {doc._id}</p>
-          <p>{doc.start_date} to {doc.due_date}</p>
-          <p>Priority: {doc.priority}</p>
+          <p>ID: {doc.id}</p>
+          <p>Name: {doc.name}</p>
+          <p>Items: {JSON.stringify(doc.items)}</p>
           <button onClick={() => setEditing(true)}>Edit</button>
           <button onClick={handleDelete}>Delete</button>
         </>

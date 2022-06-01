@@ -34,10 +34,6 @@
   text-align: center;
 }
 
-.sections > * {
-  margin: 4rem auto;
-}
-
 pre,
 div.error {
   background-color: #e5e5e5;

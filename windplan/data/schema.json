@@ -1,0 +1,31 @@
+[
+    {
+        "singular": "program", 
+        "plural": "programs", 
+        "relations": { 
+            "projects": { "hasMany": "project" }
+        }
+    },
+    {
+        "singular": "project", 
+        "plural": "projects", 
+        "relations": { 
+            "program": { "belongsTo": "program" },
+            "items": { "hasMany": "item" }
+        }
+    },
+    {
+        "singular": "item", 
+        "plural": "items", 
+        "relations": { 
+            "project": { "belongsTo": "project" }
+        }
+    },
+    {
+        "singular": "team", 
+        "plural": "teams", 
+        "relations": { 
+            "subTeams": { "hasMany": "team" }
+        }
+    }
+]

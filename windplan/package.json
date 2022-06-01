@@ -9,8 +9,5 @@
     "devDependencies": {
         "@microsoft/teamsfx-cli": "0.*"
     },
-    "license": "MIT",
-    "dependencies": {
-        "recharts": "^2.1.9"
-    }
+    "license": "MIT"
 }

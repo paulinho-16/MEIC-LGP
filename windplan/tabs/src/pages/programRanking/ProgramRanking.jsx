@@ -5,8 +5,7 @@ import { ProgramList } from "../../components/programRanking/ProgramList";
 
 import "./ProgramRanking.css";
 
-export function ProgramRanking() {
-  
+export default function ProgramRanking() {
   return (
     <div className="program-ranking">
       <div className="program-ranking-list">
