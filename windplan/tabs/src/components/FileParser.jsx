@@ -182,46 +182,47 @@ async function timelines(db, rows) {
   );
 }
 
+let addTeam = (teams, name, parentTeam = null) => {
+  if (!teams.hasOwnProperty(name)) {
+    let teamId = "team" + Object.keys(teams).length;
+
+    teams[name] = {
+      id: teamId,
+      name: name,
+      subTeams: [],
+      months: [],
+      projects: [],
+    };
+
+    if (parentTeam) teams[parentTeam].subTeams.push(teamId);
+  }
+};
+
 async function rbsAvaBookDem(db, rows) {
   let teams = {};
-
-  let addTeam = (name, parentTeam = null) => {
-    if (!teams.hasOwnProperty(name)) {
-      let teamId = "team" + Object.keys(teams).length;
-
-      teams[name] = {
-        id: teamId,
-        name: name,
-        subTeams: [],
-        months: [],
-      };
-
-      if (parentTeam) teams[parentTeam].subTeams.push(teamId);
-    }
-  };
 
   let months = rows.map((row) => {
     let teamName;
 
     // RBS5 Team
-    if (!row["Department Structure - RBS5"].match(/^\(.+\)$/)) {
+    if (!row["Department Structure - RBS5"].match(/^\((.|\n)+\)$/)) {
       teamName = row["Department Structure - RBS5"] + "-RBS5";
-      addTeam(teamName, row["Department Structure - RBS4"] + "-RBS4");
+      addTeam(teams, teamName, row["Department Structure - RBS4"] + "-RBS4");
     }
     // RBS4 Team
-    else if (!row["Department Structure - RBS4"].match(/^\(.+\)$/)) {
+    else if (!row["Department Structure - RBS4"].match(/^\((.|\n)+\)$/)) {
       teamName = row["Department Structure - RBS4"] + "-RBS4";
-      addTeam(teamName, row["Department Structure - RBS3"] + "-RBS3");
+      addTeam(teams, teamName, row["Department Structure - RBS3"] + "-RBS3");
     }
     // RBS3 Team
-    else if (!row["Department Structure - RBS3"].match(/^\(.+\)$/)) {
+    else if (!row["Department Structure - RBS3"].match(/^\((.|\n)+\)$/)) {
       teamName = row["Department Structure - RBS3"] + "-RBS3";
-      addTeam(teamName, row["Department Structure - RBS2"] + "-RBS2");
+      addTeam(teams, teamName, row["Department Structure - RBS2"] + "-RBS2");
     }
     // RBS2 Team
     else {
       teamName = row["Department Structure - RBS2"] + "-RBS2";
-      addTeam(teamName);
+      addTeam(teams, teamName);
     }
 
     const monthId = row["Year Month"] + "-" + teams[teamName].id;
@@ -255,26 +256,45 @@ async function rbsAvaBookDem(db, rows) {
 }
 
 async function rbsDemBook(db, rows) {
-  const data = (await db.rel.find("team"));
-  console.log(data);
+  const teamsData = (await db.rel.find("team")).teams;
 
-  const data1 = (await db.rel.find("program"));
-  console.log(data1);
+  const teams = {};
+  teamsData.forEach((team) => (teams[team.name] = { ...team }));
+  console.log(teams);
 
-  // place projects on teams
-  
-  // verify if team exists
+  rows.forEach((row) => {
+    let teamName;
 
-  // monthData.forEach((month) => {
-  //   months[month.id] = {
-  //     month: month.month,
-  //     demand: month.demand,
-  //     booking: month.booking,
-  //     cost: month.cost,
-  //     id: month.id,
-  //     rev: month.rev,
-  //   };
-  // });
+    // RBS7 & 8 always match regex, starts in RBS6
+    if (!row["Department Structure - RBS6"].match(/^\((.|\n)+\)$/)) {
+      teamName = row["Department Structure - RBS6"] + "-RBS6";
+      if (!teams.hasOwnProperty(teamName)) {
+        addTeam(teams, teamName, row["Department Structure - RBS5"] + "-RBS5");
+      }
+
+      // all bellow have been created in previous file upload
+    } else if (!row["Department Structure - RBS5"].match(/^\((.|\n)+\)$/)) {
+      teamName = row["Department Structure - RBS5"] + "-RBS5";
+    } else if (!row["Department Structure - RBS4"].match(/^\((.|\n)+\)$/)) {
+      teamName = row["Department Structure - RBS4"] + "-RBS4";
+    } else if (!row["Department Structure - RBS3"].match(/^\((.|\n)+\)$/)) {
+      teamName = row["Department Structure - RBS3"] + "-RBS3";
+    } else {
+      teamName = row["Department Structure - RBS2"] + "-RBS2";
+    }
+
+    if (teams.hasOwnProperty(teamName)) {
+      teams[teamName].projects.push(row["Project Number"]);
+    }
+  });
+
+  let teamsPromises = Object.keys(teams).map((key) => {
+    return db.rel.save("team", teams[key]);
+  });
+
+  await Promise.all(teamsPromises);
+
+  console.log("Parsed teams and projects association!");
 }
 
 async function processExcel(db, data) {
