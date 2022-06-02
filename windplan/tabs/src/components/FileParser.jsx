@@ -28,8 +28,25 @@ const rowProperties = {
     "Department Structure - RBS4",
     "Department Structure - RBS5",
     "Availability_LGP",
-    "Year Month"
-  ]
+    "Year Month",
+  ],
+  rbs_book_dem: [
+    "Department Structure - RBS2",
+    "Department Structure - RBS3",
+    "Department Structure - RBS4",
+    "Department Structure - RBS5",
+    "Department Structure - RBS6",
+    "Department Structure - RBS7",
+    "Department Structure - RBS8",
+    "Program Name",
+    "Item Name",
+    "Item Number",
+    "Project Name",
+    "Project Number",
+    "Demand_LGP",
+    "Booking_LGP",
+    "Year Month",
+  ],
 };
 
 const equals = (a, b) => a.length === b.length && a.every((v, i) => v === b[i]);
@@ -37,14 +54,12 @@ const equals = (a, b) => a.length === b.length && a.every((v, i) => v === b[i]);
 async function processRows(db, rows) {
   const properties = Object.keys(rows[0]);
 
-  console.log(properties)
-
   if (equals(properties, rowProperties.project_dem_book_cost))
     projectDemBookCost(db, rows);
-  else if (equals(properties, rowProperties.timelines)) 
-    timelines(db, rows);
+  else if (equals(properties, rowProperties.timelines)) timelines(db, rows);
   else if (equals(properties, rowProperties.rbs_ava_book_dem))
     rbsAvaBookDem(db, rows);
+  else if (equals(properties, rowProperties.rbs_book_dem)) rbsDemBook(db, rows);
 }
 
 async function projectDemBookCost(db, rows) {
@@ -81,7 +96,12 @@ async function projectDemBookCost(db, rows) {
       };
     }
 
-    const monthId = row["Year Month"] + "-" + row["Project Number"];
+    const monthId =
+      row["Year Month"] +
+      "-" +
+      row["Project Number"] +
+      "-" +
+      row["Item Number"];
 
     projects[row["Project Number"]].months.add(monthId);
 
@@ -154,7 +174,11 @@ async function timelines(db, rows) {
   // Add Items to DB
   console.log(items);
   Object.values(items).forEach((item) =>
-    db.rel.save("item", { ...item, projects: [...item.projects], milestones: [...item.milestones] })
+    db.rel.save("item", {
+      ...item,
+      projects: [...item.projects],
+      milestones: [...item.milestones],
+    })
   );
 }
 
@@ -163,8 +187,8 @@ async function rbsAvaBookDem(db, rows) {
 
   let addTeam = (name, parentTeam = null) => {
     if (!teams.hasOwnProperty(name)) {
-      let teamId = "team" + Object.keys(teams).length
-      
+      let teamId = "team" + Object.keys(teams).length;
+
       teams[name] = {
         id: teamId,
         name: name,
@@ -172,32 +196,32 @@ async function rbsAvaBookDem(db, rows) {
         months: [],
       };
 
-      if (parentTeam) teams[parentTeam].subTeams.push(teamId)
+      if (parentTeam) teams[parentTeam].subTeams.push(teamId);
     }
-  }
+  };
 
   let months = rows.map((row) => {
     let teamName;
-    
+
     // RBS5 Team
     if (!row["Department Structure - RBS5"].match(/^\(.+\)$/)) {
-      teamName = row["Department Structure - RBS5"]
-      addTeam(teamName, row["Department Structure - RBS4"])
+      teamName = row["Department Structure - RBS5"] + "-RBS5";
+      addTeam(teamName, row["Department Structure - RBS4"] + "-RBS4");
     }
     // RBS4 Team
     else if (!row["Department Structure - RBS4"].match(/^\(.+\)$/)) {
-      teamName = row["Department Structure - RBS4"]
-      addTeam(teamName, row["Department Structure - RBS3"])
+      teamName = row["Department Structure - RBS4"] + "-RBS4";
+      addTeam(teamName, row["Department Structure - RBS3"] + "-RBS3");
     }
     // RBS3 Team
     else if (!row["Department Structure - RBS3"].match(/^\(.+\)$/)) {
-      teamName = row["Department Structure - RBS3"]
-      addTeam(teamName, row["Department Structure - RBS2"])
+      teamName = row["Department Structure - RBS3"] + "-RBS3";
+      addTeam(teamName, row["Department Structure - RBS2"] + "-RBS2");
     }
     // RBS2 Team
     else {
-      teamName = row["Department Structure - RBS2"]
-      addTeam(teamName)
+      teamName = row["Department Structure - RBS2"] + "-RBS2";
+      addTeam(teamName);
     }
 
     const monthId = row["Year Month"] + "-" + teams[teamName].id;
@@ -213,21 +237,44 @@ async function rbsAvaBookDem(db, rows) {
 
   let teamsPromises = Object.values(teams).map((team) => {
     return db.rel.save("team", team);
-  })
+  });
 
   await Promise.all(teamsPromises);
 
-  console.log("Parsed teams!")
+  console.log("Parsed teams!");
 
   let monthsPromises = months.map((month) => {
     return db.rel.save("month", month);
-  })
+  });
 
   await Promise.all(monthsPromises);
 
-  console.log("Parsed months!")
+  console.log("Parsed months!");
 
   return;
+}
+
+async function rbsDemBook(db, rows) {
+  const data = (await db.rel.find("team"));
+  console.log(data);
+
+  const data1 = (await db.rel.find("program"));
+  console.log(data1);
+
+  // place projects on teams
+  
+  // verify if team exists
+
+  // monthData.forEach((month) => {
+  //   months[month.id] = {
+  //     month: month.month,
+  //     demand: month.demand,
+  //     booking: month.booking,
+  //     cost: month.cost,
+  //     id: month.id,
+  //     rev: month.rev,
+  //   };
+  // });
 }
 
 async function processExcel(db, data) {
