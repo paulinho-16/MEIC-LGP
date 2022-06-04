@@ -32,7 +32,7 @@ export default function EditProgram({ defaultDoc, submitFunction }) {
         <input
           name="strategic"
           type="checkbox"
-          checked={state.strategic}
+          checked={state.strategic || false}
           onChange={handleChange} />
       </label>
       <br />

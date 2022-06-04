@@ -2,5 +2,5 @@
     padding: 0em 3em;
     display: grid;
     gap: 2em;
-    grid-template-columns: 70% 30%;
+    grid-template-columns: 35% 65%;
 }
