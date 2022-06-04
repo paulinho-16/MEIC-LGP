@@ -21,36 +21,35 @@ export function StackGraph() {
 
   useEffect(() => {
     async function loadPrograms() {
-      const programs = (await db.rel.find('program')).programs
+      
+      let programs=[]
       let months_costs = []
       let program_years = []
       let months_years = []
-      for (let program of programs) {
-        const items = (await db.rel.find('item', program.items)).items
-
+      
+      let program=(await db.rel.find('program',1))
+      let i=0;
+      while(program.programs.length!==0)
+      {
+        programs.push(program['programs'][0])
         let program_months = []
+        
+        const months=program.months;
 
-        for (let item of items) {
-          const projects = (await db.rel.find('project', item.projects)).projects
+        months.forEach((month) => {
+          let year_parsed = parseInt(month["month"].split("-")[0])
+          let month_parsed = parseInt(month["month"].split("-")[1])
+          program_years.push(year_parsed)
 
-          for (let project of projects) {
-            const months = (await db.rel.find('month', project.months)).months
-
-            months.forEach((month) => {
-              let year_parsed = parseInt(month["month"].split("-")[0])
-              let month_parsed = parseInt(month["month"].split("-")[1])
-              program_years.push(year_parsed)
-
-              if(program_months[year_parsed]===undefined)
-                program_months[year_parsed]=[]
-              if(program_months[year_parsed][month_parsed]===undefined)
-                program_months[year_parsed][month_parsed]=0
-              program_months[year_parsed][month_parsed]=program_months[year_parsed][month_parsed]+month["cost"]
-            })
-          }
-        }
-
+          if(program_months[year_parsed]===undefined)
+            program_months[year_parsed]=[]
+          if(program_months[year_parsed][month_parsed]===undefined)
+            program_months[year_parsed][month_parsed]=0
+          program_months[year_parsed][month_parsed]=program_months[year_parsed][month_parsed]+month["cost"]
+        })
         months_costs.push(program_months)
+        i++;
+        program=(await db.rel.find('program',i))
       }
       let unique = [...new Set(program_years)]
       setState({
@@ -73,24 +72,6 @@ export function StackGraph() {
     )
   }
 
-  //data.value=data_placeholder
-
-  //horas 
-  /*   let k=0;
-    while (k<12)
-    {
-      hours[k]=hours[k]*(1+Math.random()/5)
-      k++;
-    }
-  
-    data[state.length]=
-    {
-      x: months,
-      y: hours,
-      name: "hours",
-      type: "scatter"
-    } */
-    //changeYear(2022)
 function changeYear(a)
 {
   data_placeholder = []
