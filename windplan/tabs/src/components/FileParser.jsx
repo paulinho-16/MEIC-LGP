@@ -55,11 +55,13 @@ async function processRows(db, rows) {
   const properties = Object.keys(rows[0]);
 
   if (equals(properties, rowProperties.project_dem_book_cost))
-    projectDemBookCost(db, rows);
-  else if (equals(properties, rowProperties.timelines)) timelines(db, rows);
+    await projectDemBookCost(db, rows);
+  else if (equals(properties, rowProperties.timelines)) 
+    await timelines(db, rows);
   else if (equals(properties, rowProperties.rbs_ava_book_dem))
-    rbsAvaBookDem(db, rows);
-  else if (equals(properties, rowProperties.rbs_book_dem)) rbsDemBook(db, rows);
+    await rbsAvaBookDem(db, rows);
+  else if (equals(properties, rowProperties.rbs_book_dem)) 
+    await rbsDemBook(db, rows);
 }
 
 async function projectDemBookCost(db, rows) {

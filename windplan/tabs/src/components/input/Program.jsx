@@ -10,8 +10,6 @@ export default function Program({ id, deleteCallback }) {
   useEffect(() => {
     const updateProgram = async (programId) => {
       const program = (await db.rel.find('program', programId))
-
-      console.log(program)
       
       if (program.programs.length === 1) {
         setData({
@@ -35,11 +33,10 @@ export default function Program({ id, deleteCallback }) {
     }
   }
 
-  // const handleDelete = () => {
-  //   db.rel.del('program', data).then(() => {
-  //     deleteCallback()
-  //   })
-  // }
+  const handleDelete = () => {
+    db.rel.del('program', data.program)
+    deleteCallback()
+  }
 
   const handleRestore = async () => {
     const programId = db.rel.makeDocID({ "type": "program", "id": data.program.id });
@@ -75,11 +72,11 @@ export default function Program({ id, deleteCallback }) {
             <p>ID: {data.program.id}</p>
             <p>Name: {data.program.name}</p>
             <button onClick={() => setEditing(true)}>Edit</button>
-            {/* <button onClick={handleDelete}>Delete</button> */}
+            <button onClick={handleDelete}>Delete</button>
             <button onClick={handleRestore}>Restore</button>
           </div>
         ) : (
-          <EditProgram defaultDoc={data.program} submitFunction={handleSave} />
+          <EditProgram defaultDoc={data.program} submitFunction={handleSave} cancelFunction={() => setEditing(false)} />
         )}
         <h4>Items</h4>
         <pre>{JSON.stringify(data.items, null, 2)}</pre>
