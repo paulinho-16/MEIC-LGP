@@ -16,7 +16,6 @@ export function ProgramList() {
     loadPrograms();
   }, [db])
 
-  
   if (state.length === 0) {
     return (
       <div>Loading Programs...</div>
@@ -31,10 +30,10 @@ export function ProgramList() {
     ranking=ranking+1;
   });
 
-  
   const header={
     items:['Rank', 'Name'],
   }
+
   const rows=table
   return (
     <Table header={header} rows={rows} aria-label="Program Ranking"></Table>
