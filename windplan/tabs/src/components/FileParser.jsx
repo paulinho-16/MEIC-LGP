@@ -302,7 +302,7 @@ async function processExcel(db, data) {
   const firstSheet = workbook.SheetNames[0];
   const excelRows = utils.sheet_to_row_object_array(
     workbook.Sheets[firstSheet],
-    { defval: null }
+    { defval: null, raw: false }
   );
 
   await processRows(db, excelRows);
