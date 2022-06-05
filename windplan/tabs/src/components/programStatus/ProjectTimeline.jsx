@@ -30,12 +30,15 @@ export function ProjectTimeline() {
           height: 30
         })
         for(let milestone of program.milestones){
+            var start_time = `${milestone.plannedFinishedDate} 00:00`
+            var end_time = `${milestone.plannedFinishedDate} 24:00`
+            
             items.push({
                 id: program.id + milestone.milestoneName,
                 group: program.id,
                 title: milestone.phase,
-                start_time: moment(milestone.plannedFinishedDate),
-                end_time: moment(milestone.plannedFinishedDate),
+                start_time: moment(start_time),
+                end_time: moment(end_time),
             })
         }
       }
