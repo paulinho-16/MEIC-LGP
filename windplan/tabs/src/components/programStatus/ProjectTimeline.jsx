@@ -81,9 +81,9 @@ export function ProjectTimeline() {
     <Timeline
       groups={state.groups}
       items={state.items}
-      defaultTimeStart={moment().add(1, 'day')}
-      defaultTimeEnd={moment().add(31, 'day')}
-      minZoom={30*24*60*60*1000}
+      defaultTimeStart={moment()}
+      defaultTimeEnd={moment().add(1, 'year')}
+      minZoom={24*60*60*1000}
     />
 
   )
