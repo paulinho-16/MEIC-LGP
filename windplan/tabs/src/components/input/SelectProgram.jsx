@@ -24,7 +24,7 @@ export default function SelectProgram() {
 
   return (
     <div>
-      <h2>View Program</h2>
+      <h1>View Program</h1>
       <label>Select program:
         <select name="program" onChange={(e) => setSelected(parseInt(e.target.value))} defaultValue={0}>
           <option value={0}></option>

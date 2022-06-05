@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from 'react';
 import { DbContext } from '../../context/db';
 import EditProgram from './EditProgram';
+import Item from './Item';
 
 export default function Program({ id, deleteCallback }) {
   const [data, setData] = useState(null)
@@ -65,12 +66,15 @@ export default function Program({ id, deleteCallback }) {
 
   return (
     <>
-      <h2>{data.program.name} {data.program.strategic && '(!)'}</h2>
+      <h2>{data.program.name}</h2>
       <div>
         { !editing ? (
           <div>
-            <p>ID: {data.program.id}</p>
-            <p>Name: {data.program.name}</p>
+            <h5>Fields</h5>
+            { Object.keys(data.program).filter(key => !["rev", "items"].includes(key)).map((key) => (
+              <p key={key}>{key}: {data.program[key]}</p>
+            )) }
+            <h5>Actions</h5>
             <button onClick={() => setEditing(true)}>Edit</button>
             <button onClick={handleDelete}>Delete</button>
             <button onClick={handleRestore}>Restore</button>
@@ -78,12 +82,21 @@ export default function Program({ id, deleteCallback }) {
         ) : (
           <EditProgram defaultDoc={data.program} submitFunction={handleSave} cancelFunction={() => setEditing(false)} />
         )}
-        <h4>Items</h4>
-        <pre>{JSON.stringify(data.items, null, 2)}</pre>
-        <h4>Projects</h4>
-        <pre>{JSON.stringify(data.projects, null, 2)}</pre>
-        <h5>Months</h5>
-        <pre>{JSON.stringify(data.months, null, 2)}</pre>
+        <hr/>
+        <h3>Items</h3>
+        <div style={{ paddingLeft: '2em' }}>
+          { data.items.map((item, i) => (<div key={i}><Item item={item} type="item"/></div>)) }
+        </div>
+        <hr/>
+        <h3>Projects</h3>
+        <div style={{ paddingLeft: '2em' }}>
+          { data.projects.map((item, i) => (<div key={i}><Item item={item} type="project"/></div>)) }
+        </div>
+        <hr/>
+        <h3>Months</h3>
+        <div style={{ paddingLeft: '2em' }}>
+          { data.months.map((item, i) => (<div key={i}><Item item={item} type="month"/></div>)) }
+        </div>
       </div>
     </>
   );
