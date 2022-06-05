@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Menu } from "@fluentui/react-northstar";
-import { Input, ProgramRanking } from "..";
+import { Input, ProgramRanking, ProjectStatus } from "..";
 import { useTeamsFx } from "../../lib/useTeamsFx";
 import { DbProvider } from "../../context/db";
 
@@ -38,7 +38,7 @@ export default function Tab() {
               <ProgramRanking />
             )}
             {selectedMenuItem === "status" && (
-              <h2>Status Page</h2>
+              <ProjectStatus/>
             )}
           </div>
         </div>
