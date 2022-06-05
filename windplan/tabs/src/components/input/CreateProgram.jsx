@@ -3,6 +3,8 @@ import { DbContext, DbDispatchContext } from '../../context/db'
 
 import { parseFile } from '../FileParser'
 
+import ProgressBar from '../progressBar/ProgressBar';
+
 // import EditProgram from './EditProgram';
 
 import StyledDropzone from './StyledDropzone';
@@ -19,6 +21,7 @@ export default function CreateProgram() {
   const resetDb = useContext(DbDispatchContext)
 
   const [state, setState] = useState(DefaultState)
+  const [progress, setProgress] = useState(0)
   
   const getData = async () => {
     const newPrograms = (await db.rel.find('program')).programs
@@ -49,13 +52,13 @@ export default function CreateProgram() {
   useEffect(() => { getData() }, [db])
 
   const handleFiles = async (files) => {
-    // NOTE: IT ONLY ACCEPTS THE FILE PROJECT_DEM_BOOK_COST_20.05.2022.xlsx
-    files.forEach(async (file) => await parseFile(db, file));
+    files.forEach(async (file) => await parseFile(db, file, progress, setProgress));
     getData()
   }
 
   return (
     <div>
+      {progress > 0 && <ProgressBar progress={progress}/>}
       <h2>Input Data</h2>
       <StyledDropzone handleFiles={handleFiles} />
       <br />
