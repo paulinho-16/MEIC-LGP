@@ -51,18 +51,29 @@ const rowProperties = {
 
 const equals = (a, b) => a.length === b.length && a.every((v, i) => v === b[i]);
 
-async function processRows(db, rows) {
+async function processRows(db, rows, progress, setProgress) {
   const properties = Object.keys(rows[0]);
 
   if (equals(properties, rowProperties.project_dem_book_cost))
-    projectDemBookCost(db, rows);
-  else if (equals(properties, rowProperties.timelines)) timelines(db, rows);
+    projectDemBookCost(db, rows, progress, setProgress);
+  else if (equals(properties, rowProperties.timelines))
+    timelines(db, rows, progress, setProgress);
   else if (equals(properties, rowProperties.rbs_ava_book_dem))
-    rbsAvaBookDem(db, rows);
-  else if (equals(properties, rowProperties.rbs_book_dem)) rbsDemBook(db, rows);
+    rbsAvaBookDem(db, rows, progress, setProgress);
+  else if (equals(properties, rowProperties.rbs_book_dem))
+    rbsDemBook(db, rows, progress, setProgress);
 }
 
-async function projectDemBookCost(db, rows) {
+async function promisesProgress(promises, progress, setProgress) {
+  await Promise.all(
+    promises.map((promise) => {
+      return Promise.resolve(promise).then(() => setProgress((++progress / promises.length) * 100));
+    })
+  );
+  setProgress(0);
+}
+
+async function projectDemBookCost(db, rows, progress, setProgress) {
   let programs = {};
   let items = {};
   let projects = {};
@@ -107,7 +118,7 @@ async function projectDemBookCost(db, rows) {
 
     return db.rel.save("month", {
       id: monthId,
-      month: row["Year Month"],
+      name: row["Year Month"],
       demand: row["Demand_LGP"],
       booking: row["Booking_LGP"],
       cost: row["Cost_LGP"],
@@ -117,28 +128,31 @@ async function projectDemBookCost(db, rows) {
   // Add Programs to DB
   console.log(programs);
   Object.values(programs).forEach((program) =>
-    db.rel.save("program", { ...program, items: [...program.items] })
+    promises.push(
+      db.rel.save("program", { ...program, items: [...program.items] })
+    )
   );
 
   // Add Items to DB
   console.log(items);
   Object.values(items).forEach((item) =>
-    db.rel.save("item", { ...item, projects: [...item.projects] })
+    promises.push(
+      db.rel.save("item", { ...item, projects: [...item.projects] })
+    )
   );
 
   // Add projects to DB
   console.log(projects);
   Object.values(projects).forEach((project) =>
-    db.rel.save("project", { ...project, months: [...project.months] })
+    promises.push(
+      db.rel.save("project", { ...project, months: [...project.months] })
+    )
   );
 
-  console.log(promises);
-  await Promise.all(promises);
-
-  return;
+  promisesProgress(promises, progress, setProgress);
 }
 
-async function timelines(db, rows) {
+async function timelines(db, rows, progress, setProgress) {
   let programs = new Set();
   const programsData = (await db.rel.find("program")).programs;
   programsData.forEach((program) => programs.add(program.name));
@@ -156,30 +170,34 @@ async function timelines(db, rows) {
     };
   });
 
-  rows.forEach((row) => {
-    const programName = row["Program Name"];
-    const itemNumber = row["Item Number"];
+  const milestonesPromises = rows
+    .filter((row) => programs.has(row["Program Name"]) && items.hasOwnProperty(row["Item Number"]))
+    .map((row) => {
+      const id = row["Item Number"] + "-" + row["Milestone Name"]
 
-    if (!programs.has(programName) || !items.hasOwnProperty(itemNumber)) return;
+      const milestone = {
+        id: id,
+        name: row["Milestone Name"],
+        phase: row["Phase"],
+        searchField: row["Milestone Search Field"],
+        plannedFinishedDate: row["Current Planned Finish Date"],
+        actualFinishedDate: row["Actual Finish Date"],
+      }
 
-    items[itemNumber].milestones.push({
-      phase: row["Phase"],
-      milestoneName: row["Milestone Name"],
-      milestoneSearchField: row["Milestone Search Field"],
-      plannedFinishedDate: row["Current Planned Finish Date"],
-      actualFinishedDate: row["Actual Finish Date"],
+      items[row["Item Number"]].milestones.push(id);
+
+      return db.rel.save('milestone', milestone)
     });
-  });
 
-  // Add Items to DB
-  console.log(items);
-  Object.values(items).forEach((item) =>
+  const itemsPromises = Object.values(items).map((item) =>
     db.rel.save("item", {
       ...item,
       projects: [...item.projects],
       milestones: [...item.milestones],
     })
-  );
+  )
+
+  promisesProgress([...milestonesPromises, ...itemsPromises], progress, setProgress);
 }
 
 let addTeam = (teams, name, parentTeam = null) => {
@@ -198,7 +216,7 @@ let addTeam = (teams, name, parentTeam = null) => {
   }
 };
 
-async function rbsAvaBookDem(db, rows) {
+async function rbsAvaBookDem(db, rows, progress, setProgress) {
   let teams = {};
 
   let months = rows.map((row) => {
@@ -231,31 +249,21 @@ async function rbsAvaBookDem(db, rows) {
 
     return {
       id: monthId,
-      month: row["Year Month"],
+      name: row["Year Month"],
       availability: row["Availability_LGP"],
     };
   });
 
-  let teamsPromises = Object.values(teams).map((team) => {
+  let promises = Object.values(teams).map((team) => {
     return db.rel.save("team", team);
   });
-
-  await Promise.all(teamsPromises);
-
-  console.log("Parsed teams!");
-
-  let monthsPromises = months.map((month) => {
-    return db.rel.save("month", month);
+  months.forEach((month) => {
+    promises.push(db.rel.save("month", month));
   });
-
-  await Promise.all(monthsPromises);
-
-  console.log("Parsed months!");
-
-  return;
+  promisesProgress(promises, progress, setProgress);
 }
 
-async function rbsDemBook(db, rows) {
+async function rbsDemBook(db, rows, progress, setProgress) {
   const teamsData = (await db.rel.find("team")).teams;
 
   const teams = {};
@@ -292,12 +300,12 @@ async function rbsDemBook(db, rows) {
     return db.rel.save("team", teams[key]);
   });
 
-  await Promise.all(teamsPromises);
+  promisesProgress(teamsPromises, progress, setProgress);
 
   console.log("Parsed teams and projects association!");
 }
 
-async function processExcel(db, data) {
+async function processExcel(db, data, progress, setProgress) {
   const workbook = read(data, { type: "binary" });
   const firstSheet = workbook.SheetNames[0];
   const excelRows = utils.sheet_to_row_object_array(
@@ -305,18 +313,18 @@ async function processExcel(db, data) {
     { defval: null, raw: false }
   );
 
-  await processRows(db, excelRows);
+  await processRows(db, excelRows, progress, setProgress);
 
   console.log("Finished parsing!");
 }
 
-export async function parseFile(db, file) {
+export async function parseFile(db, file, progress, setProgress) {
   if (typeof FileReader !== "undefined") {
     const reader = new FileReader();
 
     if (reader.readAsBinaryString) {
       reader.onload = (e) => {
-        processExcel(db, reader.result);
+        processExcel(db, reader.result, progress, setProgress);
       };
 
       reader.readAsBinaryString(file);

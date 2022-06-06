@@ -31,7 +31,6 @@ const rejectStyle = {
 
 export default function StyledDropzone({ handleFiles }) {
   const {
-    acceptedFiles,
     getRootProps,
     getInputProps,
     isFocused,
@@ -53,22 +52,12 @@ export default function StyledDropzone({ handleFiles }) {
     isDragReject
   ]);
 
-  const files = acceptedFiles.map(file => (
-    <li key={file.path}>
-      {file.path} - {file.size} bytes
-    </li>
-  ));
-
   return (
     <div className="container">
       <div {...getRootProps({style})}>
         <input {...getInputProps()} />
         <p>Drop some files here, or click to select files</p>
       </div>
-      <aside>
-          <h4>Files</h4>
-          <ul>{files}</ul>
-        </aside>
     </div>
   );
 }

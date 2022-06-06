@@ -1,15 +1,17 @@
 import React from 'react';
 
-import CreateProgram from '../../components/input/CreateProgram';
-import SelectProgram from '../../components/input/SelectProgram';
+import InputData from '../../components/input/InputData';
+import Select from '../../components/input/Select';
+import EditScoringVars from '../../components/EditScoringVars/EditScoringVars';
 
 import "./Input.css";
 
 export default function Input() {
   return (
     <div className="input">
-      <CreateProgram />
-      <SelectProgram />
+      <InputData />
+      <Select type="programs" />
+      <EditScoringVars />
     </div>
   );
 }
