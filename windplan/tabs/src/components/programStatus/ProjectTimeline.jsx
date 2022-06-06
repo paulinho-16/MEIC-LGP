@@ -7,21 +7,34 @@ import React, { useContext, useEffect, useState } from "react";
 
 export function ProjectTimeline({groups,items,options}) {
 
-  console.log(groups)
-  console.log(items)
-  console.log(options)
-
   var selectedGroups = []
   var selectedItems = []
+
+  for(let selection of options){
+    for(let group of groups){
+      if(group.id == selection.value){
+        selectedGroups.push(group)
+        break
+      }
+    }
+    for(let item of items){
+      if(item.group == selection.value){
+        selectedItems.push(item)
+      }
+    }
+  }
+
+  console.log(selectedGroups)
+  console.log(selectedItems)
 
   return (
 
     <Timeline
-      groups={groups}
-      items={items}
+      groups={selectedGroups}
+      items={selectedItems}
       defaultTimeStart={moment()}
       defaultTimeEnd={moment().add(1, 'year')}
-      minZoom={24*60*60*1000}
+      minZoom={60*60*1000}
     />
 
   )
