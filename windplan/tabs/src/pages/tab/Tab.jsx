@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 import { Menu } from "@fluentui/react-northstar";
-import { Input, ProgramRanking } from "..";
+import { Homepage, Input, ProgramRanking } from "..";
 import { useTeamsFx } from "../../lib/useTeamsFx";
 import { DbProvider } from "../../context/db";
 
 import "./Tab.css";
-import Homepage from "../homepage/Homepage";
 
 
 export default function Tab() {
