@@ -11,7 +11,9 @@ export function StackGraph() {
   const [state, setState] = useState({
     programs: [],
     months_costs: [],
-    years: []
+    years: [],
+    cost_per_hour: 50,
+    selected_year: 0
   })
 
   const [data, setData] = useState({
@@ -69,13 +71,14 @@ export function StackGraph() {
         programs: programs,
         months_costs: months_costs,
         program_demands: program_demands,
-        years: unique
+        years: unique,
+        cost_per_hour: 50,
+        selected_year: 0
       })
     }
 
     loadPrograms();
   }, [db])
-
 
   let months_name = ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"]
   let costs_name = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
@@ -87,7 +90,6 @@ export function StackGraph() {
   }
 
   function changeYear(a) {
-    let cost_per_hour = 50
     data_placeholder = []
     data_placeholder.push({
       x: months_name,
@@ -96,11 +98,16 @@ export function StackGraph() {
       type: "bar"
     })
 
-    let years_index = 0
+    let years_index = -1
     for (let i in state.years) {
-      if (state.years[i] === a.value)
+      if (state.years[i] === a.value) {
         years_index = i
+        state.selected_year = state.years[i]
+      }
     }
+
+    if (years_index < 0)
+      return
 
     state.programs.forEach((program, i) => {
       let months = [];
@@ -127,8 +134,10 @@ export function StackGraph() {
             if (demands[year] === undefined)
               demands[year] = []
 
-            if (demand !== NaN)
-              costs[year][index] += demand * cost_per_hour
+            if (!isNaN(demand)) {
+              let fixed_cost = a.cost_per_hour === undefined ? state.cost_per_hour : a.cost_per_hour
+              costs[year][index] += demand * fixed_cost
+            }
           })
         })
 
@@ -144,9 +153,30 @@ export function StackGraph() {
     setData({ value: data_placeholder })
   }
 
+  function changeCost(a) {
+    let cost_per_hour = a.target.value === '' ? 50 : a.target.value
+
+    setState({
+      programs: state.programs,
+      months_costs: state.months_costs,
+      program_demands: state.program_demands,
+      years: state.years,
+      cost_per_hour: cost_per_hour,
+      selected_year: state.selected_year
+    })
+
+    changeYear({cost_per_hour: cost_per_hour, value: state.selected_year})
+  }
+
   return (
     <div>
+      <div style={{marginBottom: '1rem'}}>
+        <label htmlFor='cost_per_hour' style={{fontSize: '18px'}}>Cost per hour: </label>
+        <input id='cost_per_hour' placeholder={50} onInput={changeCost} style={{fontSize: '18px'}}/>
+      </div>
+      
       <Dropdown options={state.years} onChange={changeYear} placeholder="Select an option" />
+
       <Plot
         data={data.value}
         layout={{ height: 400, barmode: 'stack', title: 'Program Costs' }}
