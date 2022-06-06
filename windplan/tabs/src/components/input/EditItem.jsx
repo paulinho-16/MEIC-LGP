@@ -1,6 +1,7 @@
 import { useState } from 'react';
+import ExternalFactorForm from './ExternalFactorForm';
 
-export default function EditItem({ defaultDoc, submitFunction, cancelFunction }) {
+export default function EditItem({ defaultDoc, type, submitFunction, cancelFunction }) {
   const [state, setState] = useState(defaultDoc);
 
   const handleChange = (name, value) => {
@@ -75,6 +76,7 @@ export default function EditItem({ defaultDoc, submitFunction, cancelFunction })
         <h5>Fields</h5>
         { Object.keys(state).filter(key => !["id", "rev"].includes(key) && typeof state[key] !== "object").map((key) => renderField(key)) }
       </div>
+      { type === "program" && <ExternalFactorForm state={state} setState={setState} />}
       <div>
         <h5>Actions</h5>
         <input type="submit" value="Confirm" onClick={handleSubmit} />

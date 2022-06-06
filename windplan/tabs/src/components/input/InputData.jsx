@@ -3,7 +3,7 @@ import { DbContext, DbDispatchContext } from '../../context/db'
 
 import { parseFile } from '../FileParser'
 
-// import EditProgram from './EditProgram';
+import ProgressBar from '../progressBar/ProgressBar';
 
 import StyledDropzone from './StyledDropzone';
 
@@ -14,11 +14,12 @@ const DefaultState = {
   months: []
 }
 
-export default function CreateProgram() {
+export default function InputData() {
   const db = useContext(DbContext)
   const resetDb = useContext(DbDispatchContext)
 
   const [state, setState] = useState(DefaultState)
+  const [progress, setProgress] = useState(0)
   
   const getData = async () => {
     const program = (await db.rel.find('program', 1))
@@ -40,17 +41,17 @@ export default function CreateProgram() {
 
   useEffect(() => { getData() }, [db])
 
-  const handleFiles = (files) => {
-    // NOTE: IT ONLY ACCEPTS THE FILE PROJECT_DEM_BOOK_COST_20.05.2022.xlsx
-    for (let file of files)
-      parseFile(db, file);
+  const handleFiles = async (files) => {
+    files.forEach(async (file) => await parseFile(db, file, progress, setProgress));
+    getData()
   }
 
   return (
     <div>
-      <h2>Input Data</h2>
+      {progress > 0 && <ProgressBar progress={progress}/>}
+      <h1>Input Data</h1>
       <StyledDropzone handleFiles={handleFiles} />
-      <br />
+      <hr />
       <button onClick={getData}>Refresh DB</button>
       <button onClick={resetDb}>Reset DB</button>
       <br />

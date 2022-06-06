@@ -1,23 +1,30 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { DbContext } from '../../context/db';
 import EditItem from './EditItem';
+import Select from './Select';
 
-export default function Item({ item, type }) {
-  const [state, setState] = useState(item)
+export default function Item({ item, type, changeCallback }) {
+  const [state, setState] = useState({})
   const [editing, setEditing] = useState(false)
   const db = useContext(DbContext)
+
+  useEffect(() => {
+    setState(item)
+  }, [item])
 
   const handleSave = (newState) => {
     if (editing) {
       db.rel.save(type, newState).then(() => {
         setState(newState)
         setEditing(false)
+        changeCallback()
       })
     }
   }
 
   const handleDelete = () => {
     db.rel.del(type, state)
+    changeCallback()
   }
 
   const handleRestore = async () => {
@@ -42,7 +49,7 @@ export default function Item({ item, type }) {
       { !editing ? (
         <div>
           <h5>Fields</h5>
-          { Object.keys(state).filter(key => key !== "rev" && typeof state[key] !== "object" ).map((key) => (
+          { Object.keys(state).filter(key => key !== "rev" && typeof state[key] !== "object").map((key) => (
               <p key={key}>{key}: {state[key]}</p>
           )) }
           <h5>Actions</h5>
@@ -51,8 +58,11 @@ export default function Item({ item, type }) {
           <button onClick={handleRestore}>Restore</button>
         </div>
       ) : (
-        <EditItem defaultDoc={state} submitFunction={handleSave} cancelFunction={() => setEditing(false)} />
+        <EditItem defaultDoc={state} type={type} submitFunction={handleSave} cancelFunction={() => setEditing(false)} />
       )}
+      { Object.keys(state).filter(key => Array.isArray(state[key])).map((key) => (
+          <Select type={key} ids={state[key]} />
+      )) }
     </>
   );
 }
