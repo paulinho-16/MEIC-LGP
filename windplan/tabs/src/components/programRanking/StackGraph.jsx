@@ -3,7 +3,6 @@ import Plot from 'react-plotly.js';
 import { DbContext } from "../../context/db";
 import Dropdown from 'react-dropdown';
 import 'react-dropdown/style.css';
-import { CompanionIcon } from "@fluentui/react-northstar";
 
 export function StackGraph() {
   let data_placeholder = []
@@ -26,7 +25,6 @@ export function StackGraph() {
       let programs = []
       let months_costs = []
       let program_years = []
-      let months_years = []
       let program_demands = []
 
       let program = (await db.rel.find('program', 1))
