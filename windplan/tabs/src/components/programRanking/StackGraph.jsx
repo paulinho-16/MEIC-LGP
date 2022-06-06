@@ -40,8 +40,8 @@ export function StackGraph() {
         const months = program.months;
 
         months.forEach((month) => {
-          let year_parsed = parseInt(month["month"].split("-")[0])
-          let month_parsed = parseInt(month["month"].split("-")[1])
+          let year_parsed = parseInt(month["name"].split("-")[0])
+          let month_parsed = parseInt(month["name"].split("-")[1])
 
           let month_demand = month['demand'] !== null ? parseFloat(month['demand']) : 0
           program_years.push(year_parsed)
