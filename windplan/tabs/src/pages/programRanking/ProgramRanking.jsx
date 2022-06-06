@@ -8,7 +8,9 @@ import "./ProgramRanking.css";
 export default function ProgramRanking() {
   return (
     <div className="program-ranking">
-      <ProgramList />
+      <div className="program-ranking-list">
+       <ProgramList />
+      </div>
       <StackGraph />
     </div>
   );
