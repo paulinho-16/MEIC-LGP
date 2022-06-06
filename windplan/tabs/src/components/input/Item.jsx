@@ -60,7 +60,7 @@ export default function Item({ item, type, changeCallback }) {
       ) : (
         <EditItem defaultDoc={state} type={type} submitFunction={handleSave} cancelFunction={() => setEditing(false)} />
       )}
-      { Object.keys(state).filter(key => Array.isArray(state[key])).map((key) => (
+      { Object.keys(state).filter(key => Array.isArray(state[key]) && state[key].length > 0).map((key) => (
           <Select type={key} ids={state[key]} />
       )) }
     </>

@@ -5,7 +5,9 @@ import Item from './Item';
 const Singulars = {
   "programs": "program",
   "items": "item",
+  "milestones": "milestone",
   "projects": "project",
+  "teams": "team",
   "months": "month"
 }
 

@@ -170,35 +170,34 @@ async function timelines(db, rows, progress, setProgress) {
     };
   });
 
-  rows.forEach((row) => {
-    const programName = row["Program Name"];
-    const itemNumber = row["Item Number"];
+  const milestonesPromises = rows
+    .filter((row) => programs.has(row["Program Name"]) && items.hasOwnProperty(row["Item Number"]))
+    .map((row) => {
+      const id = row["Item Number"] + "-" + row["Milestone Name"]
 
-    if (!programs.has(programName) || !items.hasOwnProperty(itemNumber)) return;
+      const milestone = {
+        id: id,
+        name: row["Milestone Name"],
+        phase: row["Phase"],
+        searchField: row["Milestone Search Field"],
+        plannedFinishedDate: row["Current Planned Finish Date"],
+        actualFinishedDate: row["Actual Finish Date"],
+      }
 
-    items[itemNumber].milestones.push({
-      phase: row["Phase"],
-      milestoneName: row["Milestone Name"],
-      milestoneSearchField: row["Milestone Search Field"],
-      plannedFinishedDate: row["Current Planned Finish Date"],
-      actualFinishedDate: row["Actual Finish Date"],
+      items[row["Item Number"]].milestones.push(id);
+
+      return db.rel.save('milestone', milestone)
     });
-  });
 
-  // Add Items to DB
-  console.log(items);
+  const itemsPromises = Object.values(items).map((item) =>
+    db.rel.save("item", {
+      ...item,
+      projects: [...item.projects],
+      milestones: [...item.milestones],
+    })
+  )
 
-  promisesProgress(
-    Object.values(items).map((item) =>
-      db.rel.save("item", {
-        ...item,
-        projects: [...item.projects],
-        milestones: [...item.milestones],
-      })
-    ),
-    progress,
-    setProgress
-  );
+  promisesProgress([...milestonesPromises, ...itemsPromises], progress, setProgress);
 }
 
 let addTeam = (teams, name, parentTeam = null) => {
@@ -250,7 +249,7 @@ async function rbsAvaBookDem(db, rows, progress, setProgress) {
 
     return {
       id: monthId,
-      month: row["Year Month"],
+      name: row["Year Month"],
       availability: row["Availability_LGP"],
     };
   });
