@@ -3,9 +3,11 @@
     justify-content: space-around;
 }
 
-/* width temporária para a table não ficar muito pequena */
+
 .program-ranking-list
 {
-    width: 20%;
-    margin:none;
+
+    max-height: 30em;
+    min-width: 20%;
+    overflow: scroll;
 }
