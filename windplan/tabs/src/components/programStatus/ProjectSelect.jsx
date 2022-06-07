@@ -58,7 +58,7 @@ export function ProjectSelect() {
                 items.push({
                     id: proj.id + milestone.milestoneName,
                     group: proj.id,
-                    title: proj.name + " (" + milestone.phase + ")",
+                    title: milestone.milestoneName + " (" + milestone.phase + ")",
                     start_time: moment(start_time),
                     end_time: moment(end_time),
                 })
