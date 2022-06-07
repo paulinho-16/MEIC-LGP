@@ -1,0 +1,21 @@
+.project-overview {
+    padding: 50px;
+}
+
+.project-overview-content {
+    display: flex;
+}
+
+.overview-table {
+    max-height: 30em;
+    max-width: 100%;
+    overflow: scroll;
+}
+
+.overview-section:last-of-type {
+    margin-left: 50px;
+}
+
+.overview-table .ui-table__header {
+
+}
