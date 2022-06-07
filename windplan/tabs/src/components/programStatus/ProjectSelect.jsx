@@ -5,7 +5,7 @@ import moment from 'moment'
 import { DbContext } from "../../context/db";
 import React, { useContext, useEffect, useState } from "react";
 import Select from 'react-select';
-import { ProjectTimeline } from './ProjectTimeline';
+import  ProjectTimeline  from './ProjectTimeline';
 
 import { render } from 'react-dom';
 
@@ -54,25 +54,25 @@ export function ProjectSelect() {
             })
 
             for(let milestone of proj.milestones){
-                var start_time = `${milestone.plannedFinishedDate} 00:00`
-                var end_time = `${milestone.plannedFinishedDate} 23:59`
+                var start_time = `${milestone.plannedFinishedDate} 22:30`
+                var end_time = `${milestone.plannedFinishedDate} 22:31`
 
-                items.push({
+               /*  items.push({
                     id: proj.id + milestone.milestoneName,
                     group: proj.id,
                     title: milestone.milestoneName.replaceAll(" ","."),
                     start_time: moment(start_time),
                     end_time: moment(end_time)
-                })
+                }) */
                 items.push({
-                  id: proj.id + milestone.milestoneName+"_",
+                  id: proj.id + milestone.milestoneName,
                   group: proj.id,
-                  title: "",
+                  title: milestone.milestoneName,
                   start_time: moment(start_time),
-                  end_time: moment(end_time).add(2,'months'),
-                  color: 'rgb(250, 0, 0)',
-                  selectedBgColor: 'rgba(225, 0, 0, 1)',
-                  bgColor : 'rgba(225, 0, 0, 0.6)',
+                  end_time: moment(end_time).add(3,'months'),
+                  color: 'rgb(0, 0, 0)',
+                  selectedBgColor: 'rgba(255, 255, 255,0)',
+                  bgColor : 'rgba(255, 255, 255,0)',
               })
             }
 
@@ -93,7 +93,7 @@ export function ProjectSelect() {
   
   function handleChange(event) {
     let options = event
-
+    console.log("hello")
     const groups = state.groups
     const items = state.items
     const progs = state.progs
