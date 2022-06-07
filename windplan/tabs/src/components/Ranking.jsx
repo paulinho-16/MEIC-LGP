@@ -5,6 +5,7 @@ async function aggregateProgramData(db) {
 	let id = 1;
 
 	while (programData.programs.length !== 0) {
+		// Cost and Hours
 		let cost = 0, hours = 0
 
 		programData.months.forEach((month) => {
@@ -16,7 +17,30 @@ async function aggregateProgramData(db) {
 
 		// Save parsed program
 		const program = { ...programData.programs[0], cost, hours }
-		programs.push(program)
+
+		// Milestones
+		if (programData["milestones"]) {
+
+			// Items that contain WTG or Onshore
+			const validItems = programData.items.filter(item => ["wtg", "onshore"].some(word => item.name.toLowerCase().includes(word)))
+
+			// Valid Milestones
+			const validMilestones = []
+			validItems.forEach(item => validMilestones.push(...item.milestones))
+
+			const finishedMilestones = programData["milestones"]
+				.filter(milestone => validMilestones.includes(milestone["id"]))
+				.filter(milestone => milestone["actualFinishedDate"] !== null)
+				.filter(milestone => milestone["searchField"] === "GATE")
+				.sort((a, b) => new Date(b["actualFinishedDate"]) - new Date(a["actualFinishedDate"]))
+				.map(milestone => milestone.name)
+
+			if (finishedMilestones[0]) {
+				const { groups: { gate } } = /(Gate |Project |^)(?<gate>\d|Mandate|Appraisal)/.exec(finishedMilestones[0])
+				program["gate"] = gate
+				programs.push(program)
+			}
+		}
 
 		programData = (await db.rel.find('program', ++id))
 	}
@@ -103,11 +127,11 @@ function calculateGate(gate) {
 
 	if (gate === "Appraisal") gateRating = 1
 	else if (gate === "Mandate") gateRating = 1.5
-	else if (gate === "G1") gateRating = 2
-	else if (gate === "G2") gateRating = 5
-	else if (gate === "G3") gateRating = 6
-	else if (gate === "G4") gateRating = 7
-	else if (gate === ">=G5") gateRating = 10
+	else if (parseInt(gate) === 1) gateRating = 2
+	else if (parseInt(gate) === 2) gateRating = 5
+	else if (parseInt(gate) === 3) gateRating = 6
+	else if (parseInt(gate) === 4) gateRating = 7
+	else if (parseInt(gate) >= 5) gateRating = 10
 
 	return gateRating
 }
