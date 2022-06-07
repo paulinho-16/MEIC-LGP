@@ -5,35 +5,47 @@ import moment from 'moment'
 import { DbContext } from "../../context/db";
 import React, { useContext, useEffect, useState } from "react";
 
-export function ProjectTimeline({groups,items,options}) {
+import './ProjectTimeline.css'
+
+export function ProjectTimeline({groups,items,options, programs}) {
+
+  var filteredArray = []
+
+  for(let option of options){
+    for(let prog of programs){
+      if(option.label == prog.name){
+        filteredArray.push(prog)
+      }
+    }
+  }
 
   var selectedGroups = []
   var selectedItems = []
 
-  for(let selection of options){
+  for(let selection of filteredArray){
+
     for(let group of groups){
-      if(group.id == selection.value){
+
+      if(selection.items.includes(group.id)){
         selectedGroups.push(group)
-        break
       }
+
     }
     for(let item of items){
-      if(item.group == selection.value){
+
+      if(selection.items.includes(item.group)){
         selectedItems.push(item)
       }
     }
   }
 
-  console.log(selectedGroups)
-  console.log(selectedItems)
-
   return (
-
     <Timeline
       groups={selectedGroups}
       items={selectedItems}
       defaultTimeStart={moment()}
       defaultTimeEnd={moment().add(1, 'year')}
+      sidebarWidth={250}
       minZoom={60*60*1000}
     />
 

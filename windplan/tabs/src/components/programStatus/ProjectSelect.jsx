@@ -16,7 +16,8 @@ export function ProjectSelect() {
   const [state, setState] = useState({
     options: [],
     groups: [],
-    items: []
+    items: [],
+    progs: []
   })
   
   const db = useContext(DbContext)
@@ -26,32 +27,38 @@ export function ProjectSelect() {
       var groups= []
       var options= []
       var items = []
+      var progs = []
 
-      const programs = (await db.rel.find('item')).items
+      const programs = (await db.rel.find('program')).programs
+
+      const projs = (await db.rel.find('item')).items
     
 
-      console.log(programs)
- 
-      for (let program of programs) {
+      for(let program of programs){
         options.push({
           value:program.id,
           label:program.name,
         })
 
+        progs.push(program)
+      }
+ 
+      for (let proj of projs) {
+
             groups.push({
-              id:program.id,
-              title:program.name,
-              height: 30
+              id:proj.id,
+              title:proj.name,
+              items: proj.items,
             })
 
-            for(let milestone of program.milestones){
+            for(let milestone of proj.milestones){
                 var start_time = `${milestone.plannedFinishedDate} 00:00`
-                var end_time = `${milestone.plannedFinishedDate} 24:00`
-                
+                var end_time = `${milestone.plannedFinishedDate} 23:59`
+
                 items.push({
-                    id: program.id + milestone.milestoneName,
-                    group: program.id,
-                    title: milestone.phase,
+                    id: proj.id + milestone.milestoneName,
+                    group: proj.id,
+                    title: proj.name + " (" + milestone.phase + ")",
                     start_time: moment(start_time),
                     end_time: moment(end_time),
                 })
@@ -62,7 +69,8 @@ export function ProjectSelect() {
       setState({
         options:options,
         groups:groups,
-        items:items
+        items:items,
+        progs:progs
       })
       console.log("finish")
     }    loadPrograms();
@@ -73,8 +81,9 @@ export function ProjectSelect() {
 
     const groups = state.groups
     const items = state.items
+    const progs = state.progs
 
-    render(<ProjectTimeline groups={groups} items={items} options={options}/>, document.getElementById("timeline"))
+    render(<ProjectTimeline groups={groups} items={items} options={options} programs={progs}/>, document.getElementById("timeline"))
   }
 
   return (
