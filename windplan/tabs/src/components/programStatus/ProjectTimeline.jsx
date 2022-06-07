@@ -20,19 +20,27 @@ export default class App extends Component {
   
   itemRenderer = ({ item, timelineContext, itemContext, getItemProps, getResizeProps }) => {
     const { left: leftResizeProps, right: rightResizeProps } = getResizeProps();
-    const backgroundColor = itemContext.selected ? (itemContext.dragging ? "red" : item.selectedBgColor) : item.bgColor;
-    const borderColor = itemContext.resizing ? "red" : item.color;
+    const backgroundColor = itemContext.selected ? "red" : item.bgColor;
+    const borderColor = itemContext.selected ? "red" : item.color;
+
+    const color = itemContext.selected ? "black":item.color;
+
+    const borderBottomWidth=itemContext.selected ?1:0;
+    const borderTopWidth=itemContext.selected ?1:0;
+    const borderLeftWidth=itemContext.selected ?1:4;
+    const borderRightWidth=itemContext.selected ?1:0;
     return (
       <div
         {...getItemProps({
           style: {
             backgroundColor,
-            color: item.color,
+            color,
             borderColor,
             borderStyle: "solid",
-            borderWidth: 0,
-            borderLeftWidth: 4,
-            borderRightWidth: 0
+            borderBottomWidth,
+            borderTopWidth,
+            borderLeftWidth,
+            borderRightWidth
 
           },
           onMouseDown: () => {
@@ -108,6 +116,8 @@ export default class App extends Component {
       sidebarWidth={250}
       minZoom={60 * 60 * 1000}
       itemRenderer={this.itemRenderer}
+      canMove={false}
+      canResize={false}
     >
       <TimelineMarkers>
         <TodayMarker />
