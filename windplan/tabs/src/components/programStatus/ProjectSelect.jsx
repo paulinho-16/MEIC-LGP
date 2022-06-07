@@ -1,4 +1,4 @@
-import Timeline from 'react-calendar-timeline'
+
 
 import 'react-calendar-timeline/lib/Timeline.css'
 import moment from 'moment'
@@ -24,6 +24,7 @@ export function ProjectSelect() {
 
   useEffect(() => {
     async function loadPrograms() {
+
       var groups= []
       var options= []
       var items = []
@@ -49,6 +50,7 @@ export function ProjectSelect() {
               id:proj.id,
               title:proj.name,
               items: proj.items,
+              stackItems: true,
             })
 
             for(let milestone of proj.milestones){
@@ -58,10 +60,20 @@ export function ProjectSelect() {
                 items.push({
                     id: proj.id + milestone.milestoneName,
                     group: proj.id,
-                    title: milestone.milestoneName + " (" + milestone.phase + ")",
+                    title: milestone.milestoneName.replaceAll(" ","."),
                     start_time: moment(start_time),
-                    end_time: moment(end_time),
+                    end_time: moment(end_time)
                 })
+                items.push({
+                  id: proj.id + milestone.milestoneName+"_",
+                  group: proj.id,
+                  title: "",
+                  start_time: moment(start_time),
+                  end_time: moment(end_time).add(2,'months'),
+                  color: 'rgb(250, 0, 0)',
+                  selectedBgColor: 'rgba(225, 0, 0, 1)',
+                  bgColor : 'rgba(225, 0, 0, 0.6)',
+              })
             }
 
       }
@@ -76,14 +88,19 @@ export function ProjectSelect() {
     }    loadPrograms();
   }, [db])
   
+
+  
+  
   function handleChange(event) {
     let options = event
 
     const groups = state.groups
     const items = state.items
     const progs = state.progs
+    render(<ProjectTimeline 
+      groups={groups} items={items} options={options} programs={progs}>
 
-    render(<ProjectTimeline groups={groups} items={items} options={options} programs={progs}/>, document.getElementById("timeline"))
+     </ProjectTimeline> , document.getElementById("timeline"))
   }
 
   return (
