@@ -35,16 +35,36 @@ export function MatrixPlot(){
         y.push(program['effort']);
         names.push(program['name']);
     });
+    var x2=[];
+    var y2=[];
+    var names2=[];
+    programs.forEach( (program)=>{
+        x2.push(program['value']);
+        y2.push(program['cost']);
+        names2.push(program['name']);
+    });
     
     
-    var trace = [{
+    var trace = [
+    {
         x: x,
         y: y,
         mode: 'markers',
         type: 'scatter',
         text: names,
+        name: 'Value-effort',
         marker: { size: 12 }
-    }]
+    },
+    {
+        x:x2,
+        y:y2,
+        mode: 'markers',
+        type: 'scatter',
+        text: names2,
+        name: 'Value-cost',
+        marker: {size : 15}
+    }
+]
     
     let config = {
         displaylogo: false,
@@ -59,14 +79,67 @@ export function MatrixPlot(){
             data={trace}
             layout={
                 {
-                    height: 400,
-                    width: 400,
+                    annotations:[
+                        {
+                            xref: 'paper',
+                            yref: 'paper',
+                            x: -0.15,
+                            y: 1,
+                            xanchor: 'left',
+                            yanchor: 'top',
+                            text: 'High Effort/Cost',
+                            showarrow: false
+                        },
+                        {
+                            xref: 'paper',
+                            yref: 'paper',
+                            x: -0.15,
+                            y: 0,
+                            xanchor: 'left',
+                            yanchor: 'bottom',
+                            text: 'Low Effort/Cost',
+                            showarrow: false
+                        },
+                        {
+                            xref: 'paper',
+                            yref: 'paper',
+                            x: 1,
+                            y: -0.21,
+                            xanchor: 'right',
+                            yanchor: 'bottom',
+                            text: 'High Value',
+                            showarrow: false
+                        },
+                        {
+                            xref: 'paper',
+                            yref: 'paper',
+                            x: 0,
+                            y: -0.21,
+                            xanchor: 'left',
+                            yanchor: 'bottom',
+                            text: 'Low Value',
+                            showarrow: false
+                        }
+                    ],
+                    height: 500,
+                    width: 800,
                     title: 'Program Matrix',
                     xaxis: {
-                        range: [0,5]
+                        range: [0,5],
+                        title:{
+                            font:{
+                                size:20
+                            },
+                            text: 'Value',
+                        }
                     },
-                    yaxus: {
-                        range: [0,5]
+                    yaxis: {
+                        title:{
+                            font:{
+                                size:20
+                            },
+                            text: 'Effort / Cost'
+                        }
                     }
                 }
             }
