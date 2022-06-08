@@ -1,0 +1,81 @@
+.homecontainer {
+  padding-top: 0%;
+  padding-left: 2%;
+  padding-right: 2%;
+  margin-top: 0%;
+  display: grid;
+  grid-template-columns: 50% 50%;
+}
+
+.tooldescription {
+  flex: 0 0 50%;
+  width: calc(100% - 100px);
+}
+
+.guidelines {
+  display: inline-grid;
+  grid-gap: 3px;
+}
+
+.guidelines>h2 {
+  grid-row: 1;
+}
+
+.guideline-content {
+  grid-row: 2;
+
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.guideline-items {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.file {
+  border: 3px solid var(--blue);
+  border-radius: 5px;
+  background-color: var(--light-blue);
+  padding: 2em;
+}
+
+.contactandhelp {
+  grid-column: 2;
+}
+
+h2 {
+  padding-left: 0.5em;
+  padding-bottom: 0.5em;
+  border-bottom-style: solid;
+  border-bottom-width: 4px;
+}
+
+.text-div {
+  padding-left: 2%;
+}
+
+p {
+  padding-left: 2%;
+}
+
+.contactandhelp {
+  display: grid;
+}
+
+.contactandhelp>h2 {
+  grid-row: 1;
+}
+
+.contact {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+}
+
+.contact>h3 {
+  padding-left: 10px;
+}

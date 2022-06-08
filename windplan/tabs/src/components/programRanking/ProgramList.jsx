@@ -1,42 +1,28 @@
-import React, { useContext, useEffect, useState } from "react";
-import { DbContext } from "../../context/db";
+import React, { useContext } from "react";
 import { Table } from '@fluentui/react-northstar';
+import { ProgramsContext } from "../../context/programs";
 
-export function ProgramList() {
-  const db = useContext(DbContext)
-  const [state, setState] = useState([])
+export function ProgramList({costPerHour}) {
+  const programs = useContext(ProgramsContext)
 
-  useEffect(() => {
-    async function loadPrograms() {
-      const programs = (await db.rel.find('program')).programs
-  
-      setState(programs)
-    }
-    
-    loadPrograms();
-  }, [db])
-
-  
-  if (state.length === 0) {
+  if (programs.length === 0) {
     return (
-      <div>Loading Programs...</div>
+      <div>No programs in tool! Please upload data and click the 'Run' button under the Input tab!</div>
     )
   }
-  var ranking=0;
-  var table=[];
 
-  state.forEach((p) =>{
-    p["key"] = "" + p["program_id"];
-    table[ranking]={key: ranking+1, items: [ranking+1,p["name"]]};
-    ranking=ranking+1;
+  let rows = [];
+
+  programs.sort((a, b) => b["score"] - a["score"]).forEach((program, i) => {
+    const cost = program["cost"] + program["hours"] * costPerHour
+    rows.push({ key: i + 1, items: [i + 1, program["name"], program["score"].toFixed(2), cost.toFixed(2)] })
   });
 
-  
-  const header={
-    items:['Rank', 'Name'],
+  const header = {
+    items: ['Rank', 'Name', 'Score', 'Cost'],
   }
-  const rows=table
+
   return (
-    <Table header={header} rows={rows} aria-label="Program Ranking"></Table>
+    <Table header={header} rows={rows} aria-label="Program Ranking" />
   );
 }

@@ -1,6 +1,14 @@
 .input {
     padding: 0em 3em;
     display: grid;
-    gap: 2em;
-    grid-template-columns: 70% 30%;
+}
+
+.db-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+}
+
+.db-actions > button {
+    margin-right: 1em;
 }

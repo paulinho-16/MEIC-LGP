@@ -21,7 +21,15 @@ const dbSchema = [
     plural: "items", 
     relations: { 
       program: { belongsTo: "program" },
-      projects: { hasMany: "project" }
+      projects: { hasMany: "project" },
+      milestones: { hasMany: "milestone" }
+    }
+  },
+  {
+    singular: "milestone", 
+    plural: "milestones", 
+    relations: { 
+      item: { belongsTo: "item" }
     }
   },
   {

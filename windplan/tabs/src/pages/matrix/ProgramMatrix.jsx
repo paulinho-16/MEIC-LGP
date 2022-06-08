@@ -1,10 +1,10 @@
 import React from "react";
-
+import './ProgramMatrix.css';
 import { MatrixPlot } from "../../components/programMatrix/Matrix";
 
-export function Matrix(){
+export default function ProgramMatrix(){
     return(
-        <div className="test">
+        <div className="program-matrix">
             <MatrixPlot/>            
         </div>
     )
