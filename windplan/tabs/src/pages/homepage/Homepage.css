@@ -17,7 +17,7 @@
   grid-gap: 3px;
 }
 
-.guidelines > h2 {
+.guidelines>h2 {
   grid-row: 1;
 }
 
@@ -54,6 +54,10 @@ h2 {
   border-bottom-width: 4px;
 }
 
+.text-div {
+  padding-left: 2%;
+}
+
 p {
   padding-left: 2%;
 }
@@ -62,7 +66,7 @@ p {
   display: grid;
 }
 
-.contactandhelp > h2 {
+.contactandhelp>h2 {
   grid-row: 1;
 }
 
@@ -72,6 +76,6 @@ p {
   align-items: center;
 }
 
-.contact > h3 {
+.contact>h3 {
   padding-left: 10px;
 }

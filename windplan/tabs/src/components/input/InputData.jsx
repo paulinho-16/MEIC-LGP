@@ -23,7 +23,7 @@ export default function InputData({ uploadCallback }) {
 
   return (
     <div style={{ flexGrow: 1 }}>
-      {progress > 0 && <ProgressBar progress={progress}/>}
+      {progress > 0 && <ProgressBar progress={progress} />}
       <h3>Input Data</h3>
       <StyledDropzone handleFiles={handleFiles} />
     </div>

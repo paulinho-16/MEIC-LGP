@@ -12,6 +12,7 @@
         "@microsoft/teams-js": "^1.9.0",
         "@microsoft/teamsfx": "^0.6.0",
         "axios": "^0.21.1",
+        "jspdf": "^2.5.1",
         "msteams-react-base-component": "^3.1.0",
         "plotly.js": "^2.12.1",
         "pouchdb": "^7.3.0",

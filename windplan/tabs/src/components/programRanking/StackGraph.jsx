@@ -1,18 +1,21 @@
 import React, { useContext, useEffect, useState } from "react";
 import Plot from 'react-plotly.js';
 import { DbContext } from "../../context/db";
+import { SettingsContext } from '../../context/settings';
 import Dropdown from 'react-dropdown';
 import 'react-dropdown/style.css';
-import { CompanionIcon } from "@fluentui/react-northstar";
+import { savePDFbutton } from '../../utils/Buttons';
 
-export function StackGraph() {
+export function StackGraph({ setCostPerHour }) {
   let data_placeholder = []
   const db = useContext(DbContext)
+  const settings = useContext(SettingsContext)
+
   const [state, setState] = useState({
     programs: [],
     months_costs: [],
     years: [],
-    cost_per_hour: 50,
+    cost_per_hour: settings.COST_PER_HOUR,
     selected_year: 0
   })
 
@@ -22,11 +25,9 @@ export function StackGraph() {
 
   useEffect(() => {
     async function loadPrograms() {
-
       let programs = []
       let months_costs = []
       let program_years = []
-      let months_years = []
       let program_demands = []
 
       let program = (await db.rel.find('program', 1))
@@ -72,7 +73,7 @@ export function StackGraph() {
         months_costs: months_costs,
         program_demands: program_demands,
         years: unique,
-        cost_per_hour: 50,
+        cost_per_hour: settings.COST_PER_HOUR,
         selected_year: 0
       })
     }
@@ -154,7 +155,7 @@ export function StackGraph() {
   }
 
   function changeCost(a) {
-    let cost_per_hour = a.target.value === '' ? 50 : a.target.value
+    let cost_per_hour = a.target.value === '' ? settings.COST_PER_HOUR : a.target.value
 
     setState({
       programs: state.programs,
@@ -165,21 +166,32 @@ export function StackGraph() {
       selected_year: state.selected_year
     })
 
-    changeYear({cost_per_hour: cost_per_hour, value: state.selected_year})
+    setCostPerHour(cost_per_hour)
+
+    changeYear({ cost_per_hour: cost_per_hour, value: state.selected_year })
+  }
+
+  let config = {
+    displaylogo: false,
+    modeBarButtons: [
+      ['toImage', savePDFbutton('Save plot as PDF', 'program_costs')],
+      ['zoom2d', 'pan2d', 'select2d', 'lasso2d', 'zoomIn2d', 'zoomOut2d', 'autoScale2d', 'resetScale2d']
+    ]
   }
 
   return (
     <div>
-      <div style={{marginBottom: '1rem'}}>
-        <label htmlFor='cost_per_hour' style={{fontSize: '18px'}}>Cost per hour: </label>
-        <input id='cost_per_hour' placeholder={50} onInput={changeCost} style={{fontSize: '18px'}}/>
+      <div style={{ marginBottom: '1rem' }}>
+        <label htmlFor='cost_per_hour' style={{ fontSize: '18px' }}>Cost per hour: </label>
+        <input id='cost_per_hour' placeholder={settings.COST_PER_HOUR} onInput={changeCost} style={{ fontSize: '18px' }} />
       </div>
-      
+
       <Dropdown options={state.years} onChange={changeYear} placeholder="Select an option" />
 
       <Plot
         data={data.value}
         layout={{ height: 400, barmode: 'stack', title: 'Program Costs' }}
+        config={config}
       />
     </div>
   )
