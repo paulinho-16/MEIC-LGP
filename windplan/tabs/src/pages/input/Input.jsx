@@ -26,8 +26,6 @@ export default function Input() {
 
   const uploadCallback = () => setUploaded(true)
 
-  
-
   const clearDatabase = () => {
     setUploaded(false)
     resetDb()
