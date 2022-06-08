@@ -4,8 +4,9 @@ import { DbContext } from "../../context/db";
 import { SettingsContext } from '../../context/settings';
 import Dropdown from 'react-dropdown';
 import 'react-dropdown/style.css';
+import { savePDFbutton } from '../../utils/Buttons';
 
-export function StackGraph({setCostPerHour}) {
+export function StackGraph({ setCostPerHour }) {
   let data_placeholder = []
   const db = useContext(DbContext)
   const settings = useContext(SettingsContext)
@@ -167,21 +168,30 @@ export function StackGraph({setCostPerHour}) {
 
     setCostPerHour(cost_per_hour)
 
-    changeYear({cost_per_hour: cost_per_hour, value: state.selected_year})
+    changeYear({ cost_per_hour: cost_per_hour, value: state.selected_year })
+  }
+
+  let config = {
+    displaylogo: false,
+    modeBarButtons: [
+      ['toImage', savePDFbutton('Save plot as PDF', 'program_costs')],
+      ['zoom2d', 'pan2d', 'select2d', 'lasso2d', 'zoomIn2d', 'zoomOut2d', 'autoScale2d', 'resetScale2d']
+    ]
   }
 
   return (
     <div>
-      <div style={{marginBottom: '1rem'}}>
-        <label htmlFor='cost_per_hour' style={{fontSize: '18px'}}>Cost per hour: </label>
-        <input id='cost_per_hour' placeholder={settings.COST_PER_HOUR} onInput={changeCost} style={{fontSize: '18px'}}/>
+      <div style={{ marginBottom: '1rem' }}>
+        <label htmlFor='cost_per_hour' style={{ fontSize: '18px' }}>Cost per hour: </label>
+        <input id='cost_per_hour' placeholder={settings.COST_PER_HOUR} onInput={changeCost} style={{ fontSize: '18px' }} />
       </div>
-      
+
       <Dropdown options={state.years} onChange={changeYear} placeholder="Select an option" />
 
       <Plot
         data={data.value}
         layout={{ height: 400, barmode: 'stack', title: 'Program Costs' }}
+        config={config}
       />
     </div>
   )
