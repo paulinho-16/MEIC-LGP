@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Menu } from "@fluentui/react-northstar";
-import { Homepage, Input, Matrix, ProgramRanking, Settings } from "..";
+import { Homepage, Input, ProgramMatrix, ProgramRanking, Settings } from "..";
 import { useTeamsFx } from "../../lib/useTeamsFx";
 import { DbProvider } from "../../context/db";
 
@@ -54,7 +54,7 @@ export default function Tab() {
                 <h2>Status Page</h2>
               )}
               {selectedMenuItem === "matrix" && (
-                <Matrix />
+                <ProgramMatrix />
               )}
               {selectedMenuItem === "settings" && (
                 <Settings />
