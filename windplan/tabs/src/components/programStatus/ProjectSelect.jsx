@@ -10,9 +10,6 @@ import ProjectTimeline from './ProjectTimeline';
 import { render } from 'react-dom';
 
 export function ProjectSelect() {
-
-  let seloptions = []
-
   const [state, setState] = useState({
     options: [],
     groups: [],
@@ -51,11 +48,11 @@ export function ProjectSelect() {
         })
 
         let milestones = (await db.rel.find('item', item.id))
-        if (milestones['milestones'] === undefined) 
+        if (milestones['milestones'] === undefined)
           continue
-        
+
         milestones = milestones['milestones']
-        
+
         for (let milestone of milestones) {
           var start_time = `${milestone.plannedFinishedDate} 22:30`
           var end_time = `${milestone.plannedFinishedDate} 22:31`
@@ -95,6 +92,7 @@ export function ProjectSelect() {
 
   return (
     <div id="projects">
+      <h2>Timeline</h2>
       <Select
         isMulti
         name="colors"
@@ -102,6 +100,7 @@ export function ProjectSelect() {
         className="basic-multi-select"
         classNamePrefix="select"
         onChange={handleChange}
+        placeholder="Select Program..."
       />
       <div id="timeline">
 
