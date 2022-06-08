@@ -40,10 +40,10 @@ export default function ExternalFactorForm({ state, setState }) {
     </div>
     <div>
         <span>Quick Factors:</span>
-        <button onClick={(e) => createExternalFactor(e, 0, "year volume")}>Year Volume</button>
-        <button onClick={(e) => createExternalFactor(e, 0, "cm new")}>CM New</button>
-        <button onClick={(e) => createExternalFactor(e, 0, "cm upside")}>CM Upside</button>
-        <button onClick={(e) => createExternalFactor(e, 2022, "p&l period")}>P&L Period</button>
+        <button onClick={(e) => createExternalFactor(e, 0, "yearVolume")}>Year Volume</button>
+        <button onClick={(e) => createExternalFactor(e, 0, "cmNew")}>CM New</button>
+        <button onClick={(e) => createExternalFactor(e, 0, "cmUpside")}>CM Upside</button>
+        <button onClick={(e) => createExternalFactor(e, 2022, "plPeriod")}>P&L Period</button>
     </div>
     </div>
   );
