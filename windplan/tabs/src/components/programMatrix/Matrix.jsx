@@ -79,6 +79,11 @@ export function MatrixPlot(){
             data={trace}
             layout={
                 {
+                    font:{
+                        color:  '#4490ba'
+                    },
+                    plot_bgcolor: '#e2f1f3'
+                    ,
                     annotations:[
                         {
                             xref: 'paper',
@@ -87,7 +92,8 @@ export function MatrixPlot(){
                             y: 1,
                             xanchor: 'left',
                             yanchor: 'top',
-                            text: 'High Effort/Cost',
+                            text: '<b>High Effort/Cost</b>',
+                            
                             showarrow: false
                         },
                         {
@@ -97,43 +103,49 @@ export function MatrixPlot(){
                             y: 0,
                             xanchor: 'left',
                             yanchor: 'bottom',
-                            text: 'Low Effort/Cost',
+                            text: '<b>Low Effort/Cost</b>',
                             showarrow: false
                         },
                         {
                             xref: 'paper',
                             yref: 'paper',
                             x: 1,
-                            y: -0.21,
+                            y: -0.08,
                             xanchor: 'right',
                             yanchor: 'bottom',
-                            text: 'High Value',
+                            text: '<b>High Value</b>',
                             showarrow: false
                         },
                         {
                             xref: 'paper',
                             yref: 'paper',
                             x: 0,
-                            y: -0.21,
+                            y: -0.08,
                             xanchor: 'left',
                             yanchor: 'bottom',
-                            text: 'Low Value',
+                            text: '<b>Low Value</b>',
                             showarrow: false
                         }
                     ],
                     height: 500,
                     width: 800,
-                    title: 'Program Matrix',
                     xaxis: {
-                        range: [0,5],
+                        showgrid:false,
+                        showticklabels:false,
+                        side: 'bottom',
+                        position:0,
+                        range: [-5,5],
                         title:{
                             font:{
                                 size:20
                             },
+                            standoff:430,
                             text: 'Value',
                         }
                     },
                     yaxis: {
+                        showgrid:false,
+                        showticklabels:false,
                         title:{
                             font:{
                                 size:20
