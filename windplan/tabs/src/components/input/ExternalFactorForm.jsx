@@ -1,3 +1,4 @@
+import { Button, Input, Text } from '@fluentui/react-northstar';
 import { useState } from 'react';
 
 export default function ExternalFactorForm({ state, setState }) {
@@ -24,27 +25,29 @@ export default function ExternalFactorForm({ state, setState }) {
 
   return (
     <div>
-    <h5>New External Factor</h5>
-    <div>
-        <label>
-            Field name:
-            <input
-            name="name"
-            type="text"
-            value={factorName}
-            onChange={(e) => setFactorName(e.target.value)} />
-        </label>
-        <button onClick={(e) => createExternalFactor(e, "")}>String</button>
-        <button onClick={(e) => createExternalFactor(e, 0)}>Number</button>
-        <button onClick={(e) => createExternalFactor(e, false)}>Boolean</button>
-    </div>
-    <div>
-        <span>Quick Factors:</span>
-        <button onClick={(e) => createExternalFactor(e, 0, "yearVolume")}>Year Volume</button>
-        <button onClick={(e) => createExternalFactor(e, 0, "cmNew")}>CM New</button>
-        <button onClick={(e) => createExternalFactor(e, 0, "cmUpside")}>CM Upside</button>
-        <button onClick={(e) => createExternalFactor(e, 2022, "plPeriod")}>P&L Period</button>
-    </div>
+      <Text weight='bold' size="large">Create External Factor</Text>
+      <div style={{ margin: "0.5em 0" }}>
+        <Text>Quick Factors:</Text>
+        <div style={{ display: "flex", gap: "1em" }}>
+          <Button flat onClick={(e) => createExternalFactor(e, 0, "year volume")} content="Year Volume"/>
+          <Button flat onClick={(e) => createExternalFactor(e, 0, "cm new")} content="CM New"/>
+          <Button flat onClick={(e) => createExternalFactor(e, 0, "cm upside")} content="CM Upside"/>
+          <Button flat onClick={(e) => createExternalFactor(e, 2022, "p&l period")} content="P&L Period"/>
+        </div>
+      </div>
+      <div style={{ margin: "0.5em 0" }}>
+        <Input 
+          inline
+          label="New Factor: "
+          value={factorName}
+          onChange={(e) => setFactorName(e.target.value)}
+        />
+      </div>
+      <div style={{ display: "flex", gap: "1em" }}>
+        <Button flat onClick={(e) => createExternalFactor(e, "")} content="String"/>
+        <Button flat onClick={(e) => createExternalFactor(e, 0)} content="Number"/>
+        <Button flat onClick={(e) => createExternalFactor(e, false)} content="Boolean"/>
+      </div>
     </div>
   );
 }
