@@ -73,7 +73,7 @@ function calculateEffort(settings, hours, cost) {
 	else if (mCost > 5) costRating = 2
 	else if (mCost > 0) costRating = 1
 
-	return { 
+	return {
 		effortRatings: { hoursRating, costRating },
 		effort: settings.VPS_HOURS * hoursRating + settings.RD_COST * costRating
 	}
@@ -84,7 +84,7 @@ function calculateValue(settings, yVolume, cmNew, cmUpside) {
 
 	if (!yVolume || !cmNew || !cmUpside) {
 		console.log("Missing external factors for formula!")
-		return { 
+		return {
 			valueRatings: { yVolumeRating, cmNewRating, cmUpsideRating },
 			value: 1
 		}
@@ -111,7 +111,7 @@ function calculateValue(settings, yVolume, cmNew, cmUpside) {
 	else if (cmUpside > 0.5) cmUpsideRating = 2
 	else if (cmUpside > 0) cmUpsideRating = 1
 
-	return { 
+	return {
 		valueRatings: { yVolumeRating, cmNewRating, cmUpsideRating },
 		value: yVolumeRating * (settings.CM_WEIGHT * cmNewRating + cmUpsideRating)
 	}
@@ -158,9 +158,7 @@ function calculatePLPeriod(plPeriod) {
 }
 
 function rankPrograms(settings, programs) {
-
 	programs = programs.map(program => {
-
 		const { effortRatings, effort } = calculateEffort(settings, program["hours"], program["cost"])
 		const { valueRatings, value } = calculateValue(settings, program["yearVolume"], program["cmNew"], program["cmUpside"])
 		const gateRating = calculateGate(program["gate"])
@@ -168,10 +166,11 @@ function rankPrograms(settings, programs) {
 
 		const score = settings.VALUE_EFFORT * (value / effort) + settings.GATE * gateRating + settings.PL_PERIOD * plPeriodRating
 
-		return { ...program, effort, value, score, ratings: { ...effortRatings, ...valueRatings, gateRating, plPeriodRating } }
+		const cost = program["cost"]
 
+		return { ...program, effort, value, score, ratings: { ...effortRatings, ...valueRatings, gateRating, plPeriodRating }, cost }
 	})
-	
+
 	return programs
 }
 

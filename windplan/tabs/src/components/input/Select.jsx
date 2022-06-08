@@ -32,7 +32,7 @@ export default function Select({ type, ids }) {
     return function cleanup() {
       setSelected(0)
     };
-  }, [db, type, ids])
+  }, [db, type, ids, loadRows])
 
   const changeCallback = (deleted) => {
     if (deleted) setSelected(0)

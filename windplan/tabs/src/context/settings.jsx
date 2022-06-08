@@ -11,7 +11,8 @@ function SettingsProvider({ children }) {
     CM_WEIGHT: 2,
     VALUE_EFFORT: 0.7,
     GATE: 0.2,
-    PL_PERIOD: 0.1
+    PL_PERIOD: 0.1,
+    COST_PER_HOUR: 50
   });
 
   return (
