@@ -14,11 +14,11 @@ export function ProgramList() {
   let rows = [];
 
   programs.sort((a, b) => b["score"] - a["score"]).forEach((program, i) => {
-    rows.push({ key: i + 1, items: [i + 1, program["name"], program["score"].toFixed(2)] })
+    rows.push({ key: i + 1, items: [i + 1, program["name"], program["score"].toFixed(2), program["cost"].toFixed(2)] })
   });
 
   const header = {
-    items:['Rank', 'Name', 'Score'],
+    items: ['Rank', 'Name', 'Score', 'Cost'],
   }
 
   return (

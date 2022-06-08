@@ -29,10 +29,10 @@ export default function Tab() {
         <SettingsProvider>
           <ProgramsProvider>
             <div className="tabs page">
-              <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
-                <div class="container">
-                  <img src="windplan_complexa_positivo-01.png" alt="windplan" class="navbar-brand"></img>
-                  <div class="pages">
+              <nav className="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+                <div className="container">
+                  <img src="windplan_complexa_positivo-01.png" alt="windplan" className="navbar-brand"></img>
+                  <div className="pages">
                     <Menu defaultActiveIndex={0} items={items} primary styles={{
                       backgroundColor:"rgb(116, 172, 245)"
                     }}/>

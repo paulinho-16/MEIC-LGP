@@ -1,17 +1,24 @@
 import React, { useContext, useEffect, useState } from "react";
 import Plot from 'react-plotly.js';
 import { DbContext } from "../../context/db";
+import { SettingsContext } from '../../context/settings';
+import { ProgramsDispatchContext } from '../../context/programs';
 import Dropdown from 'react-dropdown';
 import 'react-dropdown/style.css';
+
+import { rankPrograms } from '../Ranking';
 
 export function StackGraph() {
   let data_placeholder = []
   const db = useContext(DbContext)
+  const settings = useContext(SettingsContext)
+  const updatePrograms = useContext(ProgramsDispatchContext)
+
   const [state, setState] = useState({
     programs: [],
     months_costs: [],
     years: [],
-    cost_per_hour: 50,
+    cost_per_hour: settings.COST_PER_HOUR,
     selected_year: 0
   })
 
@@ -21,7 +28,6 @@ export function StackGraph() {
 
   useEffect(() => {
     async function loadPrograms() {
-
       let programs = []
       let months_costs = []
       let program_years = []
@@ -70,7 +76,7 @@ export function StackGraph() {
         months_costs: months_costs,
         program_demands: program_demands,
         years: unique,
-        cost_per_hour: 50,
+        cost_per_hour: settings.COST_PER_HOUR,
         selected_year: 0
       })
     }
@@ -152,7 +158,7 @@ export function StackGraph() {
   }
 
   function changeCost(a) {
-    let cost_per_hour = a.target.value === '' ? 50 : a.target.value
+    let cost_per_hour = a.target.value === '' ? settings.COST_PER_HOUR : a.target.value
 
     setState({
       programs: state.programs,
@@ -170,7 +176,7 @@ export function StackGraph() {
     <div>
       <div style={{marginBottom: '1rem'}}>
         <label htmlFor='cost_per_hour' style={{fontSize: '18px'}}>Cost per hour: </label>
-        <input id='cost_per_hour' placeholder={50} onInput={changeCost} style={{fontSize: '18px'}}/>
+        <input id='cost_per_hour' placeholder={settings.COST_PER_HOUR} onInput={changeCost} style={{fontSize: '18px'}}/>
       </div>
       
       <Dropdown options={state.years} onChange={changeYear} placeholder="Select an option" />
