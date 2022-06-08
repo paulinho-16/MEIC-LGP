@@ -37,9 +37,9 @@ export default function ProjectOverview({ overviewType, doc, items, projects, mo
         if(project.months.includes(month.id)){
             programMonths.push(month)
             var valueParsed = 0
-            if (overviewType == "cost"){
+            if (overviewType === "cost"){
                 valueParsed = parseFloat(month.cost)
-            } else if (overviewType == "capacity"){
+            } else if (overviewType === "capacity"){
                 valueParsed = parseFloat(month.demand)
             }
             if (!isNaN(valueParsed)) {
@@ -57,7 +57,7 @@ export default function ProjectOverview({ overviewType, doc, items, projects, mo
 
   return (
     <div className='overview-section'>
-        <h2>{overviewType == 'cost' ?  "Cost Overview" : "Capacity Overview"}</h2>
+        <h2>{overviewType === 'cost' ?  "Cost Overview" : "Capacity Overview"}</h2>
         <div className='overview-table'>
             <Table header={header} rows={rows} aria-label="Program Cost/Capacity Overview"></Table>
         </div>
