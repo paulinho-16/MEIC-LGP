@@ -1,53 +1,7 @@
 import React, { useContext } from "react";
 import Plot from 'react-plotly.js';
-<<<<<<< HEAD
-import { useFind } from 'react-pouchdb';
-import { savePDFbutton } from '../../utils/Buttons';
-
-export function MatrixPlot() {
-  const programs = useFind({
-    selector: {},
-  });
-
-  let data = []
-
-  programs.forEach((program, i) => {
-    data[i] = {
-      x: Math.ceil(Math.random() * 10),
-      y: Math.ceil(Math.random() * 100) + 20,
-      name: program["name"],
-      type: "scatter",
-      mode: 'markers',
-      marker: { color: 'red' }
-    }
-
-  });
-
-  let trace1 = [{
-    x: [1, 2, 3, 4],
-    y: [10, 15, 13, 17],
-    mode: 'markers',
-    type: 'scatter'
-  }, { type: 'bar' }];
-
-  let config = {
-    displaylogo: false,
-    modeBarButtons: [
-      ['toImage', savePDFbutton('Save matrix as PDF', 'matrix')],
-      ['zoom2d', 'pan2d', 'select2d', 'lasso2d', 'zoomIn2d', 'zoomOut2d', 'autoScale2d', 'resetScale2d']
-    ]
-  }
-
-  return (
-    <Plot
-      data={trace1}
-      layout={{ height: 400, width: 400, title: 'Program Matrix' }}
-      config={config}
-    />
-  )
-=======
 import { ProgramsContext } from "../../context/programs";
-
+import { savePDFbutton } from '../../utils/Buttons';
 export function MatrixPlot(){
 
     const programs = useContext(ProgramsContext)
@@ -69,11 +23,11 @@ export function MatrixPlot(){
           used: 0,
           instances: 0
         });
-        if(item['name']!=o['name'])
+        if(item['name']!== o['name'])
             item['name']+=' ; '+o['name'];
       
         return r.set(key, item);
-    }, new Map).values()];
+    }, new Map()).values()];
     
     
     result.forEach( (program) => {
@@ -92,6 +46,13 @@ export function MatrixPlot(){
         marker: { size: 12 }
     }]
     
+    let config = {
+        displaylogo: false,
+        modeBarButtons: [
+          ['toImage', savePDFbutton('Save matrix as PDF', 'matrix')],
+          ['zoom2d', 'pan2d', 'select2d', 'lasso2d', 'zoomIn2d', 'zoomOut2d', 'autoScale2d', 'resetScale2d']
+        ]
+      }
     
     return(
         <Plot
@@ -109,7 +70,7 @@ export function MatrixPlot(){
                     }
                 }
             }
+            config = {config}
         />
     )
->>>>>>> matrixDev
 }
