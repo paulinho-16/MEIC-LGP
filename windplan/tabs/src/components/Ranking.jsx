@@ -166,7 +166,7 @@ function rankPrograms(settings, programs) {
 
 		const score = settings.VALUE_EFFORT * (value / effort) + settings.GATE * gateRating + settings.PL_PERIOD * plPeriodRating
 
-		const cost = program["cost"] + program["hours"] * settings.COST_PER_HOUR
+		const cost = program["cost"]
 
 		return { ...program, effort, value, score, ratings: { ...effortRatings, ...valueRatings, gateRating, plPeriodRating }, cost }
 	})

@@ -2,17 +2,13 @@ import React, { useContext, useEffect, useState } from "react";
 import Plot from 'react-plotly.js';
 import { DbContext } from "../../context/db";
 import { SettingsContext } from '../../context/settings';
-import { ProgramsDispatchContext } from '../../context/programs';
 import Dropdown from 'react-dropdown';
 import 'react-dropdown/style.css';
 
-import { rankPrograms } from '../Ranking';
-
-export function StackGraph() {
+export function StackGraph({setCostPerHour}) {
   let data_placeholder = []
   const db = useContext(DbContext)
   const settings = useContext(SettingsContext)
-  const updatePrograms = useContext(ProgramsDispatchContext)
 
   const [state, setState] = useState({
     programs: [],
@@ -168,6 +164,8 @@ export function StackGraph() {
       cost_per_hour: cost_per_hour,
       selected_year: state.selected_year
     })
+
+    setCostPerHour(cost_per_hour)
 
     changeYear({cost_per_hour: cost_per_hour, value: state.selected_year})
   }
