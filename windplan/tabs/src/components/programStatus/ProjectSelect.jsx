@@ -1,11 +1,11 @@
-import Timeline from 'react-calendar-timeline'
+
 
 import 'react-calendar-timeline/lib/Timeline.css'
 import moment from 'moment'
 import { DbContext } from "../../context/db";
 import React, { useContext, useEffect, useState } from "react";
 import Select from 'react-select';
-import { ProjectTimeline } from './ProjectTimeline';
+import  ProjectTimeline  from './ProjectTimeline';
 
 import { render } from 'react-dom';
 
@@ -24,6 +24,7 @@ export function ProjectSelect() {
 
   useEffect(() => {
     async function loadPrograms() {
+
       var groups= []
       var options= []
       var items = []
@@ -49,19 +50,30 @@ export function ProjectSelect() {
               id:proj.id,
               title:proj.name,
               items: proj.items,
+              stackItems: true,
             })
 
             for(let milestone of proj.milestones){
-                var start_time = `${milestone.plannedFinishedDate} 00:00`
-                var end_time = `${milestone.plannedFinishedDate} 23:59`
+                var start_time = `${milestone.plannedFinishedDate} 22:30`
+                var end_time = `${milestone.plannedFinishedDate} 22:31`
 
-                items.push({
+               /*  items.push({
                     id: proj.id + milestone.milestoneName,
                     group: proj.id,
-                    title: milestone.milestoneName + " (" + milestone.phase + ")",
+                    title: milestone.milestoneName.replaceAll(" ","."),
                     start_time: moment(start_time),
-                    end_time: moment(end_time),
-                })
+                    end_time: moment(end_time)
+                }) */
+                items.push({
+                  id: proj.id + milestone.milestoneName,
+                  group: proj.id,
+                  title: milestone.milestoneName,
+                  start_time: moment(start_time),
+                  end_time: moment(end_time).add(3,'months'),
+                  color: 'rgb(0, 0, 0)',
+                  selectedBgColor: 'rgba(255, 255, 255,0)',
+                  bgColor : 'rgba(255, 255, 255,0)',
+              })
             }
 
       }
@@ -76,14 +88,19 @@ export function ProjectSelect() {
     }    loadPrograms();
   }, [db])
   
+
+  
+  
   function handleChange(event) {
     let options = event
-
+    console.log("hello")
     const groups = state.groups
     const items = state.items
     const progs = state.progs
+    render(<ProjectTimeline 
+      groups={groups} items={items} options={options} programs={progs}>
 
-    render(<ProjectTimeline groups={groups} items={items} options={options} programs={progs}/>, document.getElementById("timeline"))
+     </ProjectTimeline> , document.getElementById("timeline"))
   }
 
   return (
