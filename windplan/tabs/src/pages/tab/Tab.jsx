@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import { Menu, PlayIcon, Button } from "@fluentui/react-northstar";
-import { Homepage, Input, ProgramMatrix, ProgramRanking, Settings } from "..";
+import { Homepage, Input, ProgramRanking, ProgramMatrix, ProgramStatus, Settings } from "..";
 import { useTeamsFx } from "../../lib/useTeamsFx";
 import { DbContext } from "../../context/db";
 
@@ -85,9 +85,9 @@ export default function Tab() {
         {selectedMenuItem === "home" && <Homepage />}
         {selectedMenuItem === "input" && <Input />}
         {selectedMenuItem === "ranking" && <ProgramRanking />}
-        {selectedMenuItem === "matrix" && (<ProgramMatrix />)}
-        {selectedMenuItem === "status" && <h2>Status Page</h2>}
-        {selectedMenuItem === "settings" && (<Settings />)}
+        {selectedMenuItem === "matrix" && <ProgramMatrix />}
+        {selectedMenuItem === "status" && <ProgramStatus />}
+        {selectedMenuItem === "settings" && <Settings />}
       </div>
     </div>
   );
