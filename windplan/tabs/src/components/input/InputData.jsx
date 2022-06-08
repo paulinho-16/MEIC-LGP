@@ -1,48 +1,31 @@
 import { useContext, useState } from 'react';
-import { DbContext, DbDispatchContext } from '../../context/db'
-import { ProgramsContext, ProgramsDispatchContext } from '../../context/programs';
-import { SettingsContext } from '../../context/settings';
+import { DbContext } from '../../context/db'
 
 import { parseFile } from '../FileParser'
 
 import ProgressBar from '../progressBar/ProgressBar';
-import { aggregateProgramData, rankPrograms } from '../Ranking';
 
 import StyledDropzone from './StyledDropzone';
 
-export default function InputData() {
+export default function InputData({ uploadCallback }) {
   const db = useContext(DbContext)
-  const resetDb = useContext(DbDispatchContext)
-
-  const programs = useContext(ProgramsContext)
-  const updatePrograms = useContext(ProgramsDispatchContext)
-
-  const settings = useContext(SettingsContext)
 
   const [progress, setProgress] = useState(0)
 
-  const runTool = async () => {
-    const parsedPrograms = await aggregateProgramData(db)
-
-    const rankedPrograms = rankPrograms(settings, parsedPrograms)
-
-    updatePrograms(rankedPrograms)
+  const updateProgress = (newVal) => {
+    setProgress(newVal)
+    if (newVal === 0) uploadCallback()
   }
 
   const handleFiles = async (files) => {
-    files.forEach(async (file) => await parseFile(db, file, progress, setProgress));
+    files.forEach(async (file) => await parseFile(db, file, progress, updateProgress));
   }
 
   return (
-    <div>
-      {progress > 0 && <ProgressBar progress={progress}/>}
-      <h1>Input Data</h1>
+    <div style={{ flexGrow: 1 }}>
+      {progress > 0 && <ProgressBar progress={progress} />}
+      <h3>Input Data</h3>
       <StyledDropzone handleFiles={handleFiles} />
-      <hr />
-      <button onClick={runTool}>Run</button>
-      <button onClick={resetDb}>Reset DB</button>
-      <br />
-      <p>There are currently {programs.length} programs on the tool!</p>
     </div>
   );
 }

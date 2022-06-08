@@ -8,4 +8,4 @@ import Tab from "./tab/Tab";
 import TabConfig from "./TabConfig";
 import TermsOfUse from "./TermsOfUse"
 
-export { Homepage, Input, Privacy, ProgramRanking, ProgramMatrix,Settings, Tab, TabConfig, TermsOfUse }
+export { Homepage, Input, Privacy, ProgramRanking, ProgramMatrix, Settings, Tab, TabConfig, TermsOfUse }

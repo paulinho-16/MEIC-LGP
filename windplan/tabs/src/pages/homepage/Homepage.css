@@ -1,85 +1,81 @@
-.homecontainer{
-    padding-top: 0%;
-    padding-left: 2%;
-    padding-right: 2%;
-    margin-top: 0%;
-    background-color: #e2f1f3;
-    display: grid;
-    grid-template-columns: 50% 50%;
+.homecontainer {
+  padding-top: 0%;
+  padding-left: 2%;
+  padding-right: 2%;
+  margin-top: 0%;
+  display: grid;
+  grid-template-columns: 50% 50%;
 }
 
 .tooldescription {
-    flex: 0 0 50%;
-    width: calc(100% - 100px);
+  flex: 0 0 50%;
+  width: calc(100% - 100px);
 }
-
 
 .guidelines {
-    display: inline-grid;
-    grid-gap: 3px;
+  display: inline-grid;
+  grid-gap: 3px;
 }
 
-.guidelines > h2{
-    grid-row: 1;
-    grid-column: 1/4;
+.guidelines>h2 {
+  grid-row: 1;
 }
 
 .guideline-content {
-    grid-row: 2;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  grid-row: 2;
+
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
 }
 
 .guideline-items {
-    display: inline-block;
-    padding: 2%;
-    width:33%;
-    height: 33%;
-    float: left;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
 }
 
-.guideline-items > svg {
-    align-items: center;
-    justify-content: center;
+.file {
+  border: 3px solid var(--blue);
+  border-radius: 5px;
+  background-color: var(--light-blue);
+  padding: 2em;
 }
 
 .contactandhelp {
-    grid-column: 2;
+  grid-column: 2;
 }
 
 h2 {
-    padding-left: 2%;
-    padding-bottom: 2%;
-    border-bottom-style: solid;
-    border-bottom-color: rgba(23, 23, 177, 0.658);
-    border-bottom-width: 2px;
+  padding-left: 0.5em;
+  padding-bottom: 0.5em;
+  border-bottom-style: solid;
+  border-bottom-width: 4px;
 }
 
-.text-div{
-    padding-left: 2%;
+.text-div {
+  padding-left: 2%;
 }
 
 p {
-    padding-left: 2%;
+  padding-left: 2%;
 }
 
 .contactandhelp {
-    display: grid;
+  display: grid;
 }
 
-.contactandhelp > h2 {
-    grid-row: 1;
+.contactandhelp>h2 {
+  grid-row: 1;
 }
-
-
 
 .contact {
-    display: flex;
-    justify-content: left;
-    align-items: center;
+  display: flex;
+  justify-content: left;
+  align-items: center;
 }
 
-.contact > h3 {
-    padding-left: 10px;
+.contact>h3 {
+  padding-left: 10px;
 }

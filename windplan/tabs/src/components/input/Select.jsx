@@ -1,6 +1,13 @@
-import { useContext, useEffect, useState } from 'react';
+import { Divider, Dropdown, Text } from '@fluentui/react-northstar';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import { DbContext } from '../../context/db';
 import Item from './Item';
+
+function titleCase(str) {
+  return str.toLowerCase().split(' ').map(function(word) {
+    return (word.charAt(0).toUpperCase() + word.slice(1));
+  }).join(' ');
+}
 
 const Singulars = {
   "programs": "program",
@@ -13,18 +20,18 @@ const Singulars = {
 
 export default function Select({ type, ids }) {
   const [selected, setSelected] = useState(0);
-  const [rows, setRows] = useState([])
+  const [rows, setRows] = useState(null)
 
   const db = useContext(DbContext)
 
-  async function loadRows() {
+  const loadRows = useCallback(async () => {
     let newRows;
 
     if (ids) newRows = (await db.rel.find(Singulars[type], ids))
     else newRows = (await db.rel.find(Singulars[type]))
 
     setRows(newRows[type] ? newRows[type] : [])
-  }
+  }, [type, ids, db])
 
   useEffect(() => {
     loadRows();
@@ -39,16 +46,31 @@ export default function Select({ type, ids }) {
     loadRows()
   }
 
+  if (rows === null) {
+    return (
+      <Text>Loading...</Text>
+    )
+  }
+
+  const handleChange = (_, e) => {
+    if (e.value != null) {
+      setSelected(rows.findIndex(el => el.name === e.value) + 1)
+    } else setSelected(0)
+  }
+
   return (
     <div>
-      <h1>View {type}</h1>
-      <label>Select {Singulars[type]}:
-        <select name={type} onChange={(e) => setSelected(parseInt(e.target.value))} defaultValue={0}>
-          <option value={0}></option>
-          {rows.map((row, i) => (<option key={row.id} value={i + 1}>{row.name}</option>))}
-        </select>
-      </label>
-      { selected > 0 && <Item item={rows[selected - 1]} type={Singulars[type]} changeCallback={changeCallback} /> }
+      <Dropdown
+        items={rows.map(el => el.name)}
+        clearable
+        placeholder={"Select " + titleCase(Singulars[type])}
+        onChange={handleChange}
+      />
+      { selected > 0 && 
+        <>
+          <Divider content={rows[selected - 1].name}/>
+          <Item item={rows[selected - 1]} type={Singulars[type]} changeCallback={changeCallback} />
+        </> }
     </div>
   );
 }

@@ -1,3 +1,4 @@
+import { Button, Divider, EditIcon, Text, TrashCanIcon, UndoIcon } from '@fluentui/react-northstar';
 import { useContext, useEffect, useState } from 'react';
 import { DbContext } from '../../context/db';
 import EditItem from './EditItem';
@@ -36,33 +37,44 @@ export default function Item({ item, type, changeCallback }) {
     let item = (await db.get(itemId, { rev: firstRev })).data
     item["id"] = state.id
     item["rev"] = state.rev
-    
-    console.log(item)
 
-    db.rel.save(type, item).then((result) => {
-      console.log("Reverted item to default")
+    db.rel.save(type, item).then(async (result) => {
+      item["rev"] = result["rev"]
+      setState(item)
     }).catch(err => console.log(err))
   }
 
   return (
-    <>
+    <div style={{ marginTop: "1em", display: "flex", gap: "2em" }}>
       { !editing ? (
-        <div>
-          <h5>Fields</h5>
-          { Object.keys(state).filter(key => key !== "rev" && typeof state[key] !== "object").map((key) => (
-              <p key={key}>{key}: {state[key]}</p>
-          )) }
-          <h5>Actions</h5>
-          <button onClick={() => setEditing(true)}>Edit</button>
-          <button onClick={handleDelete}>Delete</button>
-          <button onClick={handleRestore}>Restore</button>
-        </div>
+        <>
+          <div>
+            <div style={{ display: "flex", gap: "0.5em", marginBottom: "1em" }}>
+              <Button flat onClick={() => setEditing(true)} icon={<EditIcon />} content="EDIT"/>
+              <Button flat onClick={handleRestore} icon={<UndoIcon />} content="RESTORE"/>
+              <Button flat onClick={handleDelete} icon={<TrashCanIcon />} content="DELETE"/>
+            </div>
+            <Divider content="Fields"/>
+            { Object.keys(state).filter(key => key !== "rev" && typeof state[key] !== "object").map((key) => (
+                <div key={key}>
+                  <Text weight="bold" size="large" content={key + ": "}/>
+                  <Text size="large" content={state[key].toString()}/>
+                </div>
+            )) }
+          </div>
+          <div style={{ flexGrow: 1 }}>
+            { Object.keys(state).filter(key => Array.isArray(state[key]) && state[key].length > 0).map((key) => (
+              <div key={key} style={{ marginBottom: "1em" }}>
+                <Select type={key} ids={state[key]} />
+              </div>
+            )) }
+          </div>
+        </>
       ) : (
-        <EditItem defaultDoc={state} type={type} submitFunction={handleSave} cancelFunction={() => setEditing(false)} />
+        <div>
+          <EditItem defaultDoc={state} type={type} submitFunction={handleSave} cancelFunction={() => setEditing(false)} />
+        </div>
       )}
-      { Object.keys(state).filter(key => Array.isArray(state[key]) && state[key].length > 0).map((key) => (
-          <Select type={key} ids={state[key]} />
-      )) }
-    </>
+    </div>
   );
 }
