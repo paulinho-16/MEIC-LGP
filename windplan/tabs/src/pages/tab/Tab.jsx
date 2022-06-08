@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Menu } from "@fluentui/react-northstar";
+import { Button, Menu, PlayIcon } from "@fluentui/react-northstar";
 import { Homepage, Input, ProgramRanking } from "..";
 import { useTeamsFx } from "../../lib/useTeamsFx";
 import { DbProvider } from "../../context/db";
@@ -45,11 +45,14 @@ export default function Tab() {
         <div className="tabs page light-blue-background">
           <nav className="navbar fixed-top">
             <div className="container">
-              <img
-                src="windplan_complexa_positivo-01.png"
-                alt="windplan"
-                className="navbar-brand"
-              ></img>
+              <div className="header">
+                <img
+                  src="windplan_complexa_positivo-01.png"
+                  alt="windplan"
+                  className="navbar-brand"
+                ></img>
+                <Button flat icon={<PlayIcon/>} content="APPLY CHANGES"/>
+              </div>
               <Menu
                 className="menu"
                 defaultActiveIndex={0}
