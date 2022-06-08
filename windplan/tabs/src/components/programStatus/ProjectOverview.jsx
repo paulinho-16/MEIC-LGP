@@ -13,9 +13,11 @@ export default function ProjectOverview({ overviewType, doc, items, projects, mo
 
   var test=[]
 
-  for(let item of items){
-    if(doc.items.includes(item.id)){
-        programItems.push(item)
+  if (doc != undefined) {
+    for(let item of items){
+      if(doc.items.includes(item.id)){
+          programItems.push(item)
+      }
     }
   }
 
