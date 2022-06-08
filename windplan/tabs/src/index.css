@@ -1,13 +1,19 @@
 * {
   box-sizing: border-box;
-  /* outline: 1px dashed #f00; */
+  color: #4490BA;
+}
+
+:root {
+  --blue: #4490ba;
+  --light-blue: #f6fcff;
+  --white: #ffffff;
 }
 
 body {
   margin: 5em;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu",
-    "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  font-family: -apple-system, sans-serif, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu",
+    "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue";
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #e2f1f3;
+  background-color: #ffffff;
 }
