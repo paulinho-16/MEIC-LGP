@@ -1,11 +1,13 @@
-import React, { Suspense, useState } from "react";
+import React, { useState } from "react";
 import { Menu } from "@fluentui/react-northstar";
-import { Input } from "..";
-import { ProgramRanking } from "../programRanking/ProgramRanking";
-import { Matrix } from "../matrix/Matrix";
-import { PouchDB } from "react-pouchdb";
+import { Homepage, Input, ProgramMatrix, ProgramRanking, Settings } from "..";
 import { useTeamsFx } from "../../lib/useTeamsFx";
+import { DbProvider } from "../../context/db";
+
 import "./Tab.css";
+import { ProgramsProvider } from "../../context/programs";
+import { SettingsProvider } from "../../context/settings";
+
 
 export default function Tab() {
   const { themeString } = useTeamsFx();
@@ -18,20 +20,29 @@ export default function Tab() {
     { key: 'ranking', content: 'Program Ranking', onClick: () => setSelectedMenuItem('ranking') },
     { key: 'status', content: 'Program Status', onClick: () => setSelectedMenuItem('status') },
     { key: 'matrix', content: 'Program Matrix', onClick: () => setSelectedMenuItem('matrix') },
+    { key: 'settings', content: 'Settings', onClick: () => setSelectedMenuItem('settings') }
   ]
 
   return (
     <div className={themeString === "default" ? "" : "dark"}>
-      <PouchDB name="windplandb">
-        <Suspense fallback="Loading...">
-          <div className="tabs page">
-            <h1 className="center">WindPlan</h1>
-
-            <Menu defaultActiveIndex={0} items={items} underlined secondary />
-
+      <DbProvider>
+        <SettingsProvider>
+          <ProgramsProvider>
+            <div className="tabs page">
+              <nav className="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+                <div className="container">
+                  <img src="windplan_complexa_positivo-01.png" alt="windplan" className="navbar-brand"></img>
+                  <div className="pages">
+                    <Menu defaultActiveIndex={0} items={items} primary styles={{
+                      backgroundColor:"rgb(116, 172, 245)"
+                    }}/>
+                  </div>
+                </div>
+              </nav>
+            </div>
             <div className="sections">
               {selectedMenuItem === "home" && (
-                <h2>Home Page</h2>
+                <Homepage />
               )}
               {selectedMenuItem === "input" && (
                 <Input />
@@ -43,12 +54,15 @@ export default function Tab() {
                 <h2>Status Page</h2>
               )}
               {selectedMenuItem === "matrix" && (
-                <Matrix />
+                <ProgramMatrix />
+              )}
+              {selectedMenuItem === "settings" && (
+                <Settings />
               )}
             </div>
-          </div>
-        </Suspense>
-      </PouchDB>
+          </ProgramsProvider>
+        </SettingsProvider>
+      </DbProvider>
     </div>
   );
 }

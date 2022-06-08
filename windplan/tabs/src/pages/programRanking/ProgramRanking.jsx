@@ -1,18 +1,20 @@
-import React from "react";
-
+import React, { useContext, useState } from "react";
+import { SettingsContext } from '../../context/settings';
 import { StackGraph } from "../../components/programRanking/StackGraph";
 import { ProgramList } from "../../components/programRanking/ProgramList";
 
 import "./ProgramRanking.css";
 
-export function ProgramRanking() {
-  
+export default function ProgramRanking() {
+  const settings = useContext(SettingsContext)
+  const [costPerHour, setCostPerHour] = useState(settings.COST_PER_HOUR)
+
   return (
     <div className="program-ranking">
       <div className="program-ranking-list">
-       <ProgramList />
+       <ProgramList costPerHour={costPerHour}/>
       </div>
-      <StackGraph />
+      <StackGraph setCostPerHour={setCostPerHour}/>
     </div>
   );
 }

@@ -1,27 +1,28 @@
-import React from "react";
-import { useFind } from 'react-pouchdb';
-import { Table } from '@fluentui/react-northstar'
+import React, { useContext } from "react";
+import { Table } from '@fluentui/react-northstar';
+import { ProgramsContext } from "../../context/programs";
 
-export function ProgramList() {
-  const programs = useFind({
-    selector: {},
-  });
+export function ProgramList({costPerHour}) {
+  const programs = useContext(ProgramsContext)
 
-  var ranking=0;
-  var table=[];
-
-  programs.forEach((p) =>{
-    p["key"] = "" + p["program_id"];
-    table[ranking]={key: ranking+1, items: [ranking+1,p["name"]]};
-    ranking=ranking+1;
-  });
-
-  console.log(programs)
-  const header={
-    items:['Rank', 'Name'],
+  if (programs.length === 0) {
+    return (
+      <div>No programs in tool! Please upload data and click the 'Run' button under the Input tab!</div>
+    )
   }
-  const rows=table
+
+  let rows = [];
+
+  programs.sort((a, b) => b["score"] - a["score"]).forEach((program, i) => {
+    const cost = program["cost"] + program["hours"] * costPerHour
+    rows.push({ key: i + 1, items: [i + 1, program["name"], program["score"].toFixed(2), cost.toFixed(2)] })
+  });
+
+  const header = {
+    items: ['Rank', 'Name', 'Score', 'Cost'],
+  }
+
   return (
-    <Table header={header} rows={rows} aria-label="Program Ranking"></Table>
+    <Table header={header} rows={rows} aria-label="Program Ranking" />
   );
 }
