@@ -13,6 +13,7 @@ export default function Tab() {
   const { themeString } = useTeamsFx();
 
   const [selectedMenuItem, setSelectedMenuItem] = useState("home");
+  const [running, setRunning] = useState(false)
 
   const db = useContext(DbContext)
   const settings = useContext(SettingsContext)
@@ -52,11 +53,15 @@ export default function Tab() {
   ];
 
   const runTool = async () => {
+    setRunning(true)
+
     const parsedPrograms = await aggregateProgramData(db)
 
     const rankedPrograms = rankPrograms(settings, parsedPrograms)
 
     updatePrograms(rankedPrograms)
+
+    setRunning(false)
   }
 
   return (
@@ -70,7 +75,7 @@ export default function Tab() {
                 alt="windplan"
                 className="navbar-brand"
               ></img>
-              <Button flat icon={<PlayIcon />} content="APPLY CHANGES" onClick={runTool} />
+              <Button flat icon={<PlayIcon />} loading={running} disabled={running} content={running ? "RUNNING" : "APPLY CHANGES"} onClick={runTool} />
             </div>
             <Menu
               className="menu"

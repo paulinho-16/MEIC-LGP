@@ -7,7 +7,7 @@ import "./ProgramRanking.css";
 
 export default function ProgramRanking() {
   const settings = useContext(SettingsContext)
-  const [costPerHour, setCostPerHour] = useState(settings.COST_PER_HOUR)
+  const [costPerHour, setCostPerHour] = useState(settings["Cost per Hour"].COST_PER_HOUR)
 
   return (
     <div className="program-ranking">

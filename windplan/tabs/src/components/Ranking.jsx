@@ -159,12 +159,12 @@ function calculatePLPeriod(plPeriod) {
 
 function rankPrograms(settings, programs) {
 	programs = programs.map(program => {
-		const { effortRatings, effort } = calculateEffort(settings, program["hours"], program["cost"])
-		const { valueRatings, value } = calculateValue(settings, program["yearVolume"], program["cmNew"], program["cmUpside"])
+		const { effortRatings, effort } = calculateEffort(settings["Effort Function"], program["hours"], program["cost"])
+		const { valueRatings, value } = calculateValue(settings["Value Function"], program["yearVolume"], program["cmNew"], program["cmUpside"])
 		const gateRating = calculateGate(program["gate"])
 		const plPeriodRating = calculatePLPeriod(program["plPeriod"])
 
-		const score = settings.VALUE_EFFORT * (value / effort) + settings.GATE * gateRating + settings.PL_PERIOD * plPeriodRating
+		const score = settings["Score Function"].VALUE_EFFORT * (value / effort) + settings["Score Function"].GATE * gateRating + settings["Score Function"].PL_PERIOD * plPeriodRating
 
 		const cost = program["cost"]
 
