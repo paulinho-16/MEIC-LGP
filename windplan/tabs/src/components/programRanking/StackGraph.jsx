@@ -5,8 +5,9 @@ import { SettingsContext } from '../../context/settings';
 import Dropdown from 'react-dropdown';
 import 'react-dropdown/style.css';
 import { savePDFbutton } from '../../utils/Buttons';
-
+import { ProgramsContext } from "../../context/programs";
 export function StackGraph({ setCostPerHour }) {
+
   let data_placeholder = []
   const db = useContext(DbContext)
   const settings = useContext(SettingsContext)
@@ -83,6 +84,14 @@ export function StackGraph({ setCostPerHour }) {
 
   let months_name = ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"]
   let costs_name = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+  const programs_context = useContext(ProgramsContext)
+
+  if (programs_context.length === 0) {
+      return (
+      <div></div>
+      )
+  }
 
   if (state.programs.length === 0) {
     return (
