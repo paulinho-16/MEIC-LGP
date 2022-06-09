@@ -14,7 +14,9 @@ export function MatrixPlot(){
     var x=[];
     var y =[];
     var names = [];
-    
+    var strategic_x=[];
+    var strategic_y=[];
+    var strategic_names=[];
     const result = [...programs.reduce((r, o) => {
         const key = o['value'] + '-' + o['effort'];
         
@@ -22,7 +24,7 @@ export function MatrixPlot(){
           used: 0,
           instances: 0
         });
-        if(item['name']!== o['name'])
+        if(item['name']!== o['name'] && !item['strategic'] && !o['strategic'])
             item['name']+=' ; '+o['name'];
       
         return r.set(key, item);
@@ -30,9 +32,17 @@ export function MatrixPlot(){
     
     
     result.forEach( (program) => {
-        x.push(program['value']);
-        y.push(program['effort']);
-        names.push(program['name']);
+        if(program['strategic']){
+            strategic_x.push(program['value']);
+            strategic_y.push(program['effort']);
+            strategic_names.push(program['name']);
+        }else{
+            x.push(program['value']);
+            y.push(program['effort']);
+            names.push(program['name']);
+        }
+
+        
     });
     
     var trace = [
@@ -44,7 +54,17 @@ export function MatrixPlot(){
         text: names,
         name: 'Value-effort',
         marker: { size: 12 }
-    },
+    },{
+        x:strategic_x,
+        y:strategic_y,
+        mode: 'markers',
+        type: 'scatter',
+        text: strategic_names,
+        name: 'Value-effort (strategic)',
+        marker: {
+            symbol: 'diamond',
+            size: 12 }
+    }
 ]
     
     let config = {
