@@ -1,4 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
+import { Dropdown } from '@fluentui/react-northstar';
 import { DbContext } from '../../context/db';
 import ProjectOverview from './ProjectOverview';
 
@@ -18,7 +19,8 @@ export default function SelectProjectOverview() {
 
   useEffect(() => {
     async function loadPrograms() {
-      const programs = (await db.rel.find('program')).programs
+      const programs_aux = (await db.rel.find('program'))
+      const programs = programs_aux.programs
 
       setRows(programs)
 
@@ -38,19 +40,22 @@ export default function SelectProjectOverview() {
     loadPrograms();
   }, [db])
 
-  function handleChange(e) {
-    setSelected(e.target.value);
+  const handleChange = (_, e) => {
+    console.log(e)
+    if (e.value != null) {
+      setSelected(e.highlightedIndex)
+    } else setSelected(0)
   }
 
   return (
     <div>
       <h2>View Program</h2>
-      <label>Select program:
-        <select name="program" onChange={handleChange} defaultValue={null}>
-          <option value={null}></option>
-          {rows.map((row, i) => (<option key={row.id} value={i}>{row.name}</option>))}
-        </select>
-      </label>
+      <Dropdown
+        items={rows.map(el => el.name)}
+        placeholder={"Select Program"}
+        onChange={handleChange}
+      />
+      
       <div className='project-overview-content'>
         <ProjectOverview overviewType={"cost"} doc={rows[selected]} items={state.items} projects={state.projects} months={state.months} />
         <ProjectOverview overviewType={"capacity"}doc={rows[selected]} items={state.items} projects={state.projects} months={state.months} />
