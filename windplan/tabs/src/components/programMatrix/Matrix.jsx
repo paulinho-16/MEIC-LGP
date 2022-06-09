@@ -34,15 +34,6 @@ export function MatrixPlot(){
         y.push(program['effort']);
         names.push(program['name']);
     });
-    var x2=[];
-    var y2=[];
-    var names2=[];
-    programs.forEach( (program)=>{
-        x2.push(program['value']);
-        y2.push(program['cost']);
-        names2.push(program['name']);
-    });
-    
     
     var trace = [
     {
@@ -54,15 +45,6 @@ export function MatrixPlot(){
         name: 'Value-effort',
         marker: { size: 12 }
     },
-    {
-        x:x2,
-        y:y2,
-        mode: 'markers',
-        type: 'scatter',
-        text: names2,
-        name: 'Value-cost',
-        marker: {size : 15}
-    }
 ]
     
     let config = {
@@ -81,35 +63,38 @@ export function MatrixPlot(){
                     font:{
                         color:  '#4490ba'
                     },
-                    plot_bgcolor: '#e2f1f3'
+                    plot_bgcolor: '#f6fcff'
                     ,
+                    margin:{
+                        t:40
+                    },
                     annotations:[
                         {
                             xref: 'paper',
                             yref: 'paper',
-                            x: -0.15,
+                            x: -0.07,
                             y: 1,
                             xanchor: 'left',
                             yanchor: 'top',
-                            text: '<b>High Effort/Cost</b>',
+                            text: '<b>High Effort</b>',
                             
                             showarrow: false
                         },
                         {
                             xref: 'paper',
                             yref: 'paper',
-                            x: -0.15,
+                            x: -0.07,
                             y: 0,
                             xanchor: 'left',
                             yanchor: 'bottom',
-                            text: '<b>Low Effort/Cost</b>',
+                            text: '<b>Low Effort</b>',
                             showarrow: false
                         },
                         {
                             xref: 'paper',
                             yref: 'paper',
                             x: 1,
-                            y: -0.08,
+                            y: -0.1,
                             xanchor: 'right',
                             yanchor: 'bottom',
                             text: '<b>High Value</b>',
@@ -119,16 +104,17 @@ export function MatrixPlot(){
                             xref: 'paper',
                             yref: 'paper',
                             x: 0,
-                            y: -0.08,
+                            y: -0.1,
                             xanchor: 'left',
                             yanchor: 'bottom',
                             text: '<b>Low Value</b>',
                             showarrow: false
                         }
                     ],
-                    height: 500,
-                    width: 800,
+                    height: 600,
+                    width: 1200,
                     xaxis: {
+                        color:"#4490ba",
                         showgrid:false,
                         showticklabels:false,
                         side: 'bottom',
@@ -136,20 +122,21 @@ export function MatrixPlot(){
                         range: [-5,5],
                         title:{
                             font:{
-                                size:20
+                                size:25 
                             },
-                            standoff:430,
                             text: 'Value',
                         }
                     },
                     yaxis: {
+                        color:"#4490ba",
                         showgrid:false,
                         showticklabels:false,
+                        range:[-4,4],
                         title:{
                             font:{
-                                size:20
+                                size:25
                             },
-                            text: 'Effort / Cost'
+                            text: 'Effort'
                         }
                     }
                 }
