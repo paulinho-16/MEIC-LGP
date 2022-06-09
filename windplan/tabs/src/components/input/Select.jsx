@@ -35,10 +35,6 @@ export default function Select({ type, ids }) {
 
   useEffect(() => {
     loadRows();
-
-    return function cleanup() {
-      setSelected(0)
-    };
   }, [db, type, ids, loadRows])
 
   const changeCallback = (deleted) => {

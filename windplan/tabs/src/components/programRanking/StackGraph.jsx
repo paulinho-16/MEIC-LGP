@@ -15,7 +15,7 @@ export function StackGraph({ setCostPerHour }) {
     programs: [],
     months_costs: [],
     years: [],
-    cost_per_hour: settings.COST_PER_HOUR,
+    cost_per_hour: settings["Cost per Hour"].COST_PER_HOUR,
     selected_year: 0
   })
 
@@ -73,7 +73,7 @@ export function StackGraph({ setCostPerHour }) {
         months_costs: months_costs,
         program_demands: program_demands,
         years: unique,
-        cost_per_hour: settings.COST_PER_HOUR,
+        cost_per_hour: settings["Cost per Hour"].COST_PER_HOUR,
         selected_year: 0
       })
     }
@@ -155,7 +155,7 @@ export function StackGraph({ setCostPerHour }) {
   }
 
   function changeCost(a) {
-    let cost_per_hour = a.target.value === '' ? settings.COST_PER_HOUR : a.target.value
+    let cost_per_hour = a.target.value === '' ? settings["Cost per Hour"].COST_PER_HOUR : a.target.value
 
     setState({
       programs: state.programs,
@@ -183,7 +183,7 @@ export function StackGraph({ setCostPerHour }) {
     <div>
       <div style={{ marginBottom: '1rem' }}>
         <label htmlFor='cost_per_hour' style={{ fontSize: '18px' }}>Cost per hour: </label>
-        <input id='cost_per_hour' placeholder={settings.COST_PER_HOUR} onInput={changeCost} style={{ fontSize: '18px' }} />
+        <input id='cost_per_hour' placeholder={settings["Cost per Hour"].COST_PER_HOUR} onInput={changeCost} style={{ fontSize: '18px' }} />
       </div>
 
       <Dropdown options={state.years} onChange={changeYear} placeholder="Select an option" />
