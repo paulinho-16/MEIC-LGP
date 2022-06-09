@@ -1,4 +1,4 @@
-import { AcceptIcon, Button, CloseIcon, Form, FormCheckbox, FormInput, TrashCanIcon } from '@fluentui/react-northstar';
+import { AcceptIcon, Button, CloseIcon, ExclamationTriangleIcon, Form, FormCheckbox, FormInput, TrashCanIcon } from '@fluentui/react-northstar';
 import { useState } from 'react';
 import ExternalFactorForm from './ExternalFactorForm';
 
@@ -23,6 +23,11 @@ export default function EditItem({ defaultDoc, type, submitFunction, cancelFunct
   const handleCancel = (e) => {
     e.preventDefault()
     cancelFunction()
+  }
+
+  const markStrategic = (e) => {
+    e.preventDefault()
+    setState({ ...state, strategic: true });
   }
 
   const renderField = (name) => {
@@ -84,7 +89,12 @@ export default function EditItem({ defaultDoc, type, submitFunction, cancelFunct
         <Button flat onClick={handleSubmit} icon={<AcceptIcon />} content="CONFIRM"/>
         <Button flat onClick={handleCancel} icon={<CloseIcon />} content="CANCEL"/>
       </div>
-      { type === "program" && <ExternalFactorForm state={state} setState={setState} />}
+      { type === "program" && 
+        <>
+          <Button flat onClick={markStrategic} icon={<ExclamationTriangleIcon />} content="MARK AS STRATEGIC"/>
+          <ExternalFactorForm state={state} setState={setState} />
+        </>
+      }
     </Form>
   );
 }
