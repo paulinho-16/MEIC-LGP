@@ -89,7 +89,7 @@ export function StackGraph({ setCostPerHour }) {
 
   if (programs_context.length === 0) {
       return (
-      <div>No programs in tool! Please upload data and click the 'Apply Changes' button on the navbar!</div>
+      <div></div>
       )
   }
 
