@@ -2,6 +2,13 @@
    color: black;
 }
 
+#projects{
+   padding:50px;
+}
+.react-calendar-timeline{
+   margin-top: 1em;
+}
+
 div.rct-item-content {
    color: black;
 }

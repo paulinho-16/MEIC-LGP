@@ -7,8 +7,7 @@ export function ProgramList({costPerHour}) {
 
   if (programs.length === 0) {
     return (
-      <div>No programs in tool! Please upload data and click the 'Run' button under the Input tab!</div>
-    )
+<div>No programs in tool! Please upload data and click the 'Apply Changes' button on the navbar!</div>    )
   }
 
   let rows = [];
