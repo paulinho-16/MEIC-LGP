@@ -17,21 +17,28 @@ export function MatrixPlot(){
     var strategic_x=[];
     var strategic_y=[];
     var strategic_names=[];
-    const result = [...programs.reduce((r, o) => {
-        const key = o['value'] + '-' + o['effort'];
+
+    const result = [...programs.reduce((r, o) => {  
+        let key="";
+        if(o['strategic']){
+            key = o['value'] + '-' + o['effort']+"-strategic";
+        }else{
+            key = o['value'] + '-' + o['effort'];
+        }
         
         const item = r.get(key) || Object.assign({}, o, {
           used: 0,
           instances: 0
         });
-        if(item['name']!== o['name'] && !item['strategic'] && !o['strategic'])
+        
+        if(item['name']!== o['name'] && item['strategic']===o['strategic'])
             item['name']+=' ; '+o['name'];
       
         return r.set(key, item);
     }, new Map()).values()];
     
-    
     result.forEach( (program) => {
+        
         if(program['strategic']){
             strategic_x.push(program['value']);
             strategic_y.push(program['effort']);
@@ -53,17 +60,19 @@ export function MatrixPlot(){
         type: 'scatter',
         text: names,
         name: 'Value-effort',
-        marker: { size: 12 }
-    },{
-        x:strategic_x,
-        y:strategic_y,
+        marker: { size: 25 }
+    },
+    {
+        x: strategic_x,
+        y: strategic_y,
         mode: 'markers',
         type: 'scatter',
         text: strategic_names,
         name: 'Value-effort (strategic)',
-        marker: {
-            symbol: 'diamond',
-            size: 12 }
+        marker: { 
+            size: 12,
+            symbol: 'diamond'
+         }
     }
 ]
     
