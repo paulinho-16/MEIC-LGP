@@ -1,9 +1,6 @@
-import { useContext, useState } from 'react';
-import { DbContext } from '../../context/db';
 import { Table } from '@fluentui/react-northstar';
 
 export default function ProjectOverview({ overviewType, doc, items, projects, months }) {
-  const db = useContext(DbContext)
 
   var rows=[]
 
@@ -11,9 +8,7 @@ export default function ProjectOverview({ overviewType, doc, items, projects, mo
   var programProjects=[]
   var programMonths=[]
 
-  var test=[]
-
-  if (doc != undefined) {
+  if (doc !== undefined) {
     for(let item of items){
       if(doc.items.includes(item.id)){
           programItems.push(item)

@@ -63,12 +63,12 @@ function DbProvider({ children }) {
 
   const [db, setDb] = useState(database);
 
-  const resetDb = () => {
-    db.destroy().then(() => {
-      const database = new PouchDb("WindPlan")
-      database.setSchema(dbSchema)
-      setDb(database)
-    })
+  const resetDb = async () => {
+    await db.destroy()
+
+    const database = new PouchDb("WindPlan")
+    database.setSchema(dbSchema)
+    setDb(database)
   }
 
   return (

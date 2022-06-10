@@ -80,7 +80,7 @@ export function StackGraph({ setCostPerHour }) {
     }
 
     loadPrograms();
-  }, [db])
+  }, [db, settings])
 
   let months_name = ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"]
   let costs_name = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]

@@ -324,6 +324,8 @@ export async function parseFile(db, file, progress, setProgress) {
 
     if (reader.readAsBinaryString) {
       reader.onload = (e) => {
+        // Start the loading screen
+        setProgress(1);      
         processExcel(db, reader.result, progress, setProgress);
       };
 

@@ -1,5 +1,5 @@
 import React from "react";
-import { ProjectSelect, ProjectTimeline } from "../../components/programStatus/ProjectSelect";
+import { ProjectSelect } from "../../components/programStatus/ProjectSelect";
 import SelectProjectOverview from "../../components/programStatus/SelectProjectOverview";
 
 
