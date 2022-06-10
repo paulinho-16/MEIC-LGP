@@ -56,26 +56,73 @@ export function MatrixPlot(){
     {
         x: x,
         y: y,
-        mode: 'markers',
+        mode: 'markers+text',
         type: 'scatter',
         text: names,
-        name: 'Value-effort',
+        textposition: 'right',
+        name: 'Regular Programs',
         marker: { size: 25 }
     },
     {
         x: strategic_x,
         y: strategic_y,
-        mode: 'markers',
+        mode: 'markers+text',
         type: 'scatter',
         text: strategic_names,
-        name: 'Value-effort (strategic)',
+        textposition: 'bottom',
+        textfont:{
+            color:'#ff7f0e'
+        },
+        name: 'Strategic Programs',
         marker: { 
             size: 12,
             symbol: 'diamond'
          }
     }
 ]
-    
+    let annotations = [
+        {
+            xref: 'paper',
+            yref: 'paper',
+            x: -0.07,
+            y: 1,
+            xanchor: 'left',
+            yanchor: 'top',
+            text: '<b>High Effort</b>',
+            
+            showarrow: false
+        },
+        {
+            xref: 'paper',
+            yref: 'paper',
+            x: -0.07,
+            y: 0,
+            xanchor: 'left',
+            yanchor: 'bottom',
+            text: '<b>Low Effort</b>',
+            showarrow: false
+        },
+        {
+            xref: 'paper',
+            yref: 'paper',
+            x: 1,
+            y: -0.1,
+            xanchor: 'right',
+            yanchor: 'bottom',
+            text: '<b>High Value</b>',
+            showarrow: false
+        },
+        {
+            xref: 'paper',
+            yref: 'paper',
+            x: 0,
+            y: -0.1,
+            xanchor: 'left',
+            yanchor: 'bottom',
+            text: '<b>Low Value</b>',
+            showarrow: false
+        }
+    ];
     let config = {
         displaylogo: false,
         modeBarButtons: [
@@ -97,49 +144,7 @@ export function MatrixPlot(){
                     margin:{
                         t:40
                     },
-                    annotations:[
-                        {
-                            xref: 'paper',
-                            yref: 'paper',
-                            x: -0.07,
-                            y: 1,
-                            xanchor: 'left',
-                            yanchor: 'top',
-                            text: '<b>High Effort</b>',
-                            
-                            showarrow: false
-                        },
-                        {
-                            xref: 'paper',
-                            yref: 'paper',
-                            x: -0.07,
-                            y: 0,
-                            xanchor: 'left',
-                            yanchor: 'bottom',
-                            text: '<b>Low Effort</b>',
-                            showarrow: false
-                        },
-                        {
-                            xref: 'paper',
-                            yref: 'paper',
-                            x: 1,
-                            y: -0.1,
-                            xanchor: 'right',
-                            yanchor: 'bottom',
-                            text: '<b>High Value</b>',
-                            showarrow: false
-                        },
-                        {
-                            xref: 'paper',
-                            yref: 'paper',
-                            x: 0,
-                            y: -0.1,
-                            xanchor: 'left',
-                            yanchor: 'bottom',
-                            text: '<b>Low Value</b>',
-                            showarrow: false
-                        }
-                    ],
+                    annotations: annotations,
                     height: 600,
                     width: 1200,
                     xaxis: {
