@@ -12,9 +12,6 @@ import Timeline, {
 } from 'react-calendar-timeline'
 
 export default class App extends Component {
-  constructor(props) {
-    super(props);
-  }
 
   itemRenderer = ({ item, timelineContext, itemContext, getItemProps, getResizeProps }) => {
     const { left: leftResizeProps, right: rightResizeProps } = getResizeProps();

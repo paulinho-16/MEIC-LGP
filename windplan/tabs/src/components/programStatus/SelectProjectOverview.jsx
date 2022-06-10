@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
-import { Dropdown } from '@fluentui/react-northstar';
+import { Dropdown, Text } from '@fluentui/react-northstar';
 import { DbContext } from '../../context/db';
 import ProjectOverview from './ProjectOverview';
 
@@ -7,9 +7,9 @@ import './ProjectOverview.css'
 
 export default function SelectProjectOverview() {
   const [selected, setSelected] = useState(null);
-  const [rows, setRows] = useState([])
 
   const [state, setState] = useState({
+    programs: [],
     items: [],
     projects: [],
     months: [],
@@ -19,21 +19,13 @@ export default function SelectProjectOverview() {
 
   useEffect(() => {
     async function loadPrograms() {
-      const programs_aux = (await db.rel.find('program'))
-      const programs = programs_aux.programs
-
-      setRows(programs)
-
-      const items = (await db.rel.find('item')).items
-
-      const projects = (await db.rel.find('project')).projects
-
-      const months = (await db.rel.find('month')).months
+      const programs = (await db.rel.find('program'))
 
       setState({
-        items:items,
-        projects:projects,
-        months:months
+        programs: programs.programs,
+        items: programs.items,
+        projects: programs.projects,
+        months: programs.months
       })
     }
     
@@ -47,18 +39,25 @@ export default function SelectProjectOverview() {
     } else setSelected(0)
   }
 
+  if (state.programs.length === 0) return (
+    <div>
+      <h2>View Programs</h2>
+      <Text content="Loading..." />
+    </div>
+  )
+
   return (
     <div>
       <h2>View Program</h2>
       <Dropdown
-        items={rows.map(el => el.name)}
+        items={state.programs.map(el => el.name)}
         placeholder={"Select Program"}
         onChange={handleChange}
       />
       
       <div className='project-overview-content'>
-        <ProjectOverview overviewType={"cost"} doc={rows[selected]} items={state.items} projects={state.projects} months={state.months} />
-        <ProjectOverview overviewType={"capacity"}doc={rows[selected]} items={state.items} projects={state.projects} months={state.months} />
+        <ProjectOverview overviewType={"cost"} doc={state.programs[selected]} items={state.items} projects={state.projects} months={state.months} />
+        <ProjectOverview overviewType={"capacity"}doc={state.programs[selected]} items={state.items} projects={state.projects} months={state.months} />
       </div>
     </div>
   );
