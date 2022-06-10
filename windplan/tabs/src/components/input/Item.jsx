@@ -7,6 +7,7 @@ import Select from './Select';
 export default function Item({ item, type, changeCallback }) {
   const [state, setState] = useState({})
   const [editing, setEditing] = useState(false)
+
   const db = useContext(DbContext)
 
   useEffect(() => {
@@ -15,6 +16,10 @@ export default function Item({ item, type, changeCallback }) {
 
   const handleSave = (newState) => {
     if (editing) {
+      if (newState["default"] === undefined) {
+        newState["default"] = state
+      }
+
       db.rel.save(type, newState).then(() => {
         setState(newState)
         setEditing(false)
@@ -29,19 +34,14 @@ export default function Item({ item, type, changeCallback }) {
   }
 
   const handleRestore = async () => {
-    const itemId = db.rel.makeDocID({ "type": type, "id": state.id });
+    if (!state["default"]) return
+    
+    let defaultItem = state.default
+    defaultItem.rev = state.rev
 
-    const revisions = (await db.get(itemId, { revs: true }))._revisions
-    const firstRev = "1-" + revisions.ids[revisions.ids.length - 1]
+    await db.rel.save(type, defaultItem).catch(err => console.log(err))
 
-    let item = (await db.get(itemId, { rev: firstRev })).data
-    item["id"] = state.id
-    item["rev"] = state.rev
-
-    db.rel.save(type, item).then(async (result) => {
-      item["rev"] = result["rev"]
-      setState(item)
-    }).catch(err => console.log(err))
+    changeCallback()
   }
 
   return (
@@ -55,7 +55,7 @@ export default function Item({ item, type, changeCallback }) {
               <Button flat onClick={handleDelete} icon={<TrashCanIcon />} content="DELETE"/>
             </div>
             <Divider content="Fields"/>
-            { Object.keys(state).filter(key => key !== "rev" && typeof state[key] !== "object").map((key) => (
+            { Object.keys(state).filter(key => !["rev", "id", "default"].includes(key) && typeof state[key] !== "object").map((key) => (
                 <div key={key}>
                   <Text weight="bold" size="large" content={key + ": "}/>
                   <Text size="large" content={state[key].toString()}/>

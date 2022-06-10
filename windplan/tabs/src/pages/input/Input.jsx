@@ -31,29 +31,21 @@ export default function Input() {
   const restoreDatabase = async () => {
     setRestoring(true)
 
-    const restoreDoc = async (itemId, rev) => {
-      const { type, id } = db.rel.parseDocID(itemId)
+    const restoreDoc = async (itemId, rev, defaultItem) => {
+      const { type } = db.rel.parseDocID(itemId)
       
-      if (type === 'item' && rev.startsWith("2-")) return Promise.resolve()
-      
-      console.log(itemId, rev)
+      console.log("Restoring item: " + itemId)
 
-      const revisions = (await db.get(itemId, { revs: true }))._revisions
-      const firstRev = "1-" + revisions.ids[revisions.ids.length - 1]
+      defaultItem.rev = rev
   
-      let newItem = (await db.get(itemId, { rev: firstRev })).data
-      newItem["id"] = id
-      newItem["rev"] = rev
-  
-      await db.rel.save(type, newItem).catch(err => console.log(err))
+      await db.rel.save(type, defaultItem).catch(err => console.log(err))
     }
 
     const changedDocs = (await db.find({ 
-      selector: { "_rev": { "$regex": "^(?!1-).*$"} },
-      fields: ["_id", "_rev"]
+      selector: { "data.default": { $exists: true } },
     })).docs
 
-    const promises = changedDocs.map(doc => restoreDoc(doc._id, doc._rev))
+    const promises = changedDocs.map(doc => restoreDoc(doc._id, doc._rev, doc.data.default))
     
     await Promise.all(promises)
 

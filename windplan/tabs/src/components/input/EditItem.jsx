@@ -82,7 +82,7 @@ export default function EditItem({ defaultDoc, type, submitFunction, cancelFunct
   return (
     <Form>
       { Object.keys(state)
-          .filter(key => !["id", "rev"].includes(key) && typeof state[key] !== "object")
+          .filter(key => !["id", "rev", "default"].includes(key) && typeof state[key] !== "object")
           .map((key) => renderField(key)) 
       }
       <div style={{ display: "flex", gap: "1em" }}>
