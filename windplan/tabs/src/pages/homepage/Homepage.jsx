@@ -1,6 +1,7 @@
 import React from "react";
 import { AiOutlineMail, AiOutlinePhone, AiOutlineFile } from "react-icons/ai";
 import { FiMapPin } from "react-icons/fi";
+import { BsWind } from "react-icons/bs";
 import "./Homepage.css";
 
 export default function Homepage() {
@@ -10,19 +11,13 @@ export default function Homepage() {
         <div className="tooldescription">
           <h2>Tool Description</h2>
           <div className="p-div">
-            <p>
-              Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam
-              nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam
-              erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci
-              tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo
-              consequat. Duis autem vel eum iriure dolor in hendrerit in
-              vulputate velit esse molestie consequat, vel illum dolore eu
-              feugiat nulla facilisis at vero eros et accumsan et iusto odio
-              dignissim qui blandit praesent luptatum zzril delenit augue duis
-              dolore te feugait nulla facilisi. Nam liber tempor cum soluta
-              nobis eleifend option congue nihil imperdiet doming id quod mazim
-              placerat facer possim assum.
-            </p>
+            <p>WindPlan ensures that a company is on the shortest path to success, by making sure that it knows where to invest its resources to get the best return.</p>
+            <p>It is a project portfolio management tool, in the form of a web application, that can easily be integrated into Microsoft Teams.</p>
+            <p>Unlike other PPM tools, whose complexity and low usability stifle the benefits obtained, WindPlan is simple and straightforward to use.</p>
+            <p>It's completely feasible to continue to develop/evolve the existing product so that the app is suited to the preferences of the company at hand.</p>
+            <div class="slogan" style={{ display: "flex", justifyContent: "center" }}>
+              <p style={{ verticalAlign: "bottom" }}>Manage your projects in a breeze!&nbsp;&nbsp;<BsWind size={20} style={{ verticalAlign: "bottom" }}></BsWind></p>
+            </div>
           </div>
         </div>
         <div className="guidelines">
@@ -33,11 +28,11 @@ export default function Homepage() {
               <h3>End-User License</h3>
             </div>
             <div className="guideline-items">
-              <AiOutlineFile className="file"  size={120}></AiOutlineFile>
+              <AiOutlineFile className="file" size={120}></AiOutlineFile>
               <h3>Terms and Conditions</h3>
             </div>
             <div className="guideline-items">
-              <AiOutlineFile className="file"  size={120}></AiOutlineFile>
+              <AiOutlineFile className="file" size={120}></AiOutlineFile>
               <h3>Usage Guidelines</h3>
             </div>
           </div>
