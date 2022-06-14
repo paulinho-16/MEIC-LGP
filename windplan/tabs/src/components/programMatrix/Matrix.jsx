@@ -11,13 +11,6 @@ export function MatrixPlot(){
 <div>No programs in tool! Please upload data and click the 'Apply Changes' button on the navbar!</div>        )
     }
     
-    var x=[];
-    var y =[];
-    var names = [];
-    var strategic_x=[];
-    var strategic_y=[];
-    var strategic_names=[];
-
     const result = [...programs.reduce((r, o) => {  
         let key="";
         if(o['strategic']){
@@ -32,54 +25,47 @@ export function MatrixPlot(){
         });
         
         if(item['name']!== o['name'] && item['strategic']===o['strategic'])
-            item['name']+=' ; '+o['name'];
+            item['name']+=','+o['name'].replace('Program',"");
       
         return r.set(key, item);
     }, new Map()).values()];
-    
-    result.forEach( (program) => {
-        
-        if(program['strategic']){
-            strategic_x.push(program['value']);
-            strategic_y.push(program['effort']);
-            strategic_names.push(program['name']);
-        }else{
-            x.push(program['value']);
-            y.push(program['effort']);
-            names.push(program['name']);
-        }
+    let trace=[];
+    let strategic_programs=[]
 
-        
+    result.forEach( (program) => {
+        if(program['strategic']){
+            strategic_programs.push(program);
+        }else{
+            trace.push({
+                x: [program['value']],
+                y: [program['effort']],
+                mode: 'markers',
+                type: 'scatter',
+                text:program['name'],
+                name: program['name'],
+                marker: { 
+                    size: 25,
+                    symbol: 'circle'
+                }
+            });
+        }
     });
-    
-    var trace = [
-    {
-        x: x,
-        y: y,
-        mode: 'markers+text',
-        type: 'scatter',
-        text: names,
-        textposition: 'right',
-        name: 'Regular Programs',
-        marker: { size: 25 }
-    },
-    {
-        x: strategic_x,
-        y: strategic_y,
-        mode: 'markers+text',
-        type: 'scatter',
-        text: strategic_names,
-        textposition: 'bottom',
-        textfont:{
-            color:'#ff7f0e'
-        },
-        name: 'Strategic Programs',
-        marker: { 
-            size: 12,
-            symbol: 'diamond'
-         }
-    }
-]
+
+    strategic_programs.forEach((program) =>{
+        trace.push({
+            x: [program['value']],
+            y: [program['effort']],
+            mode: 'markers',
+            type: 'scatter',
+            text:program['name'],
+            name: program['name'],
+            marker: { 
+                size: 12,
+                symbol: 'diamond'
+            }
+        });
+    });
+  
     let annotations = [
         {
             xref: 'paper',
@@ -128,7 +114,8 @@ export function MatrixPlot(){
         modeBarButtons: [
           ['toImage', savePDFbutton('Save matrix as PDF', 'matrix')],
           ['zoom2d', 'pan2d', 'select2d', 'lasso2d', 'zoomIn2d', 'zoomOut2d', 'autoScale2d', 'resetScale2d']
-        ]
+        ],
+        displayModeBar: true
       }
     
     return(
@@ -175,6 +162,7 @@ export function MatrixPlot(){
                     }
                 }
             }
+            
             config = {config}
         />
     )
