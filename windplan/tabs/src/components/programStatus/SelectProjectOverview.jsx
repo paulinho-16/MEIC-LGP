@@ -28,7 +28,7 @@ export default function SelectProjectOverview() {
         months: programs.months
       })
     }
-    
+
     loadPrograms();
   }, [db])
 
@@ -37,6 +37,10 @@ export default function SelectProjectOverview() {
     if (e.value != null) {
       setSelected(e.highlightedIndex)
     } else setSelected(0)
+  }
+
+  if (state.items === undefined) {
+    return (<div>No programs in tool! Please upload data and click the 'Apply Changes' button on the navbar!</div>)
   }
 
   if (state.programs.length === 0) return (
@@ -54,10 +58,10 @@ export default function SelectProjectOverview() {
         placeholder={"Select Program"}
         onChange={handleChange}
       />
-      
+
       <div className='project-overview-content'>
         <ProjectOverview overviewType={"cost"} doc={state.programs[selected]} items={state.items} projects={state.projects} months={state.months} />
-        <ProjectOverview overviewType={"capacity"}doc={state.programs[selected]} items={state.items} projects={state.projects} months={state.months} />
+        <ProjectOverview overviewType={"capacity"} doc={state.programs[selected]} items={state.items} projects={state.projects} months={state.months} />
       </div>
     </div>
   );

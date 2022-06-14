@@ -29,6 +29,10 @@ export function ProjectSelect() {
       const programs = (await db.rel.find('program'))
       const items = programs.items
 
+      if (items === undefined) {
+        return
+      }
+
       for (let program of programs.programs) {
         options.push({
           value: program.id,
@@ -88,6 +92,10 @@ export function ProjectSelect() {
       groups={groups} items={items} options={options} programs={progs}>
 
     </ProjectTimeline>, document.getElementById("timeline"))
+  }
+
+  if (state.progs.length === 0) {
+    return (<></>)
   }
 
   return (

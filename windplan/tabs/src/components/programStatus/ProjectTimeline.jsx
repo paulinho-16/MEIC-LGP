@@ -13,6 +13,8 @@ import Timeline, {
 
 export default class App extends Component {
 
+
+
   itemRenderer = ({ item, timelineContext, itemContext, getItemProps, getResizeProps }) => {
     const { left: leftResizeProps, right: rightResizeProps } = getResizeProps();
     const color = itemContext.selected ? "#4490ba" : item.color;
@@ -60,7 +62,6 @@ export default class App extends Component {
   };
 
   render() {
-
     let options = this.props.options
     let programs = this.props.programs
     let groups = this.props.groups
@@ -97,35 +98,35 @@ export default class App extends Component {
     }
 
     return (
-        <Timeline
-          groups={selectedGroups}
-          items={selectedItems}
-          defaultTimeStart={moment().add(-2, 'months')}
-          defaultTimeEnd={moment().add(1, 'year')}
-          sidebarWidth={250}
-          minZoom={60 * 60 * 1000 * 24 * 25}
-          itemRenderer={this.itemRenderer}
-          canMove={false}
-          canResize={false}
-        >
-          <TimelineHeaders>
-            <SidebarHeader>
-              {({ getRootProps }) => {
-                const rootProps = getRootProps();
-                rootProps.style = {
-                  ...rootProps.style,
-                  backgroundColor: "#4490ba",
-                };
-                return <div {...rootProps}></div>;
-              }}
-            </SidebarHeader>
-            <DateHeader unit="primaryHeader" style={{ backgroundColor: "#4490ba" }} />
-            <DateHeader />
-          </TimelineHeaders>
-          <TimelineMarkers>
-            <TodayMarker />
-          </TimelineMarkers>
-        </Timeline>
+      <Timeline
+        groups={selectedGroups}
+        items={selectedItems}
+        defaultTimeStart={moment().add(-2, 'months')}
+        defaultTimeEnd={moment().add(1, 'year')}
+        sidebarWidth={250}
+        minZoom={60 * 60 * 1000 * 24 * 25}
+        itemRenderer={this.itemRenderer}
+        canMove={false}
+        canResize={false}
+      >
+        <TimelineHeaders>
+          <SidebarHeader>
+            {({ getRootProps }) => {
+              const rootProps = getRootProps();
+              rootProps.style = {
+                ...rootProps.style,
+                backgroundColor: "#4490ba",
+              };
+              return <div {...rootProps}></div>;
+            }}
+          </SidebarHeader>
+          <DateHeader unit="primaryHeader" style={{ backgroundColor: "#4490ba" }} />
+          <DateHeader />
+        </TimelineHeaders>
+        <TimelineMarkers>
+          <TodayMarker />
+        </TimelineMarkers>
+      </Timeline>
     );
   }
 }
