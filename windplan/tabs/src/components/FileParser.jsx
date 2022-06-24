@@ -7,10 +7,10 @@ const rowProperties = {
     "Item Number",
     "Project Name",
     "Project Number",
-    "Demand_LGP",
-    "Booking_LGP",
+    "Demand",
+    "Booking",
     "Year Month",
-    "Cost_LGP",
+    "Cost",
   ],
   timelines: [
     "Program Name",
@@ -27,7 +27,7 @@ const rowProperties = {
     "Department Structure - RBS3",
     "Department Structure - RBS4",
     "Department Structure - RBS5",
-    "Availability_LGP",
+    "Availability",
     "Year Month",
   ],
   rbs_book_dem: [
@@ -43,8 +43,8 @@ const rowProperties = {
     "Item Number",
     "Project Name",
     "Project Number",
-    "Demand_LGP",
-    "Booking_LGP",
+    "Demand",
+    "Booking",
     "Year Month",
   ],
 };
@@ -119,9 +119,9 @@ async function projectDemBookCost(db, rows, progress, setProgress) {
     return db.rel.save("month", {
       id: monthId,
       name: row["Year Month"],
-      demand: row["Demand_LGP"],
-      booking: row["Booking_LGP"],
-      cost: row["Cost_LGP"],
+      demand: row["Demand"],
+      booking: row["Booking"],
+      cost: row["Cost"],
     });
   });
 
@@ -250,7 +250,7 @@ async function rbsAvaBookDem(db, rows, progress, setProgress) {
     return {
       id: monthId,
       name: row["Year Month"],
-      availability: row["Availability_LGP"],
+      availability: row["Availability"],
     };
   });
 
