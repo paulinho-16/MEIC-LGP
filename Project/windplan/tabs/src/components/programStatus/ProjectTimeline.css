@@ -1,0 +1,18 @@
+.react-calendar-timeline .rct-dateHeader-primary {
+   color: black;
+}
+
+#projects{
+   padding:50px;
+}
+.react-calendar-timeline{
+   margin-top: 1em;
+}
+
+div.rct-item-content {
+   color: black;
+}
+
+div > div.rct-header-root > div.rct-calendar-header > div:nth-child(1) span {
+   color: white;
+}

@@ -1,0 +1,19 @@
+* {
+  box-sizing: border-box;
+  color: #4490BA;
+}
+
+:root {
+  --blue: #4490ba;
+  --light-blue: #f6fcff;
+  --white: #ffffff;
+}
+
+body {
+  margin: 5em;
+  font-family: -apple-system, sans-serif, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu",
+    "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #ffffff;
+}

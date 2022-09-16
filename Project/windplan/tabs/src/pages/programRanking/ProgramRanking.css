@@ -1,0 +1,14 @@
+.program-ranking {
+    display: flex;
+    justify-content: space-around;
+    
+}
+
+
+.program-ranking-list
+{
+    margin-top: 1em;
+    max-height: 30em;
+    min-width: 30%;
+    overflow: scroll;
+}
